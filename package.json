@@ -1,7 +1,7 @@
 {
-  "name": "fuckjs",
+  "name": "unfuck",
   "version": "0.0.1",
-  "description": "A brainfuck to Javascript compiler.",
+  "description": "A brainfuck to Javascript compiler with optimizations.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +10,8 @@
     "brainfuck",
     "compiler",
     "ast",
-    "abstract",
-    "syntax",
-    "tree"
+    "abstract syntax tree",
+    "esolang"
   ],
   "author": "Toish <toish@digitalpanda.ca>",
   "license": "ISC",
