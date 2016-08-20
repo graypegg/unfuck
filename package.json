@@ -1,0 +1,22 @@
+{
+  "name": "fuckjs",
+  "version": "0.0.1",
+  "description": "A brainfuck to Javascript compiler.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "brainfuck",
+    "compiler",
+    "ast",
+    "abstract",
+    "syntax",
+    "tree"
+  ],
+  "author": "Toish <toish@digitalpanda.ca>",
+  "license": "ISC",
+  "dependencies": {
+    "use-strict": "^1.0.1"
+  }
+}
