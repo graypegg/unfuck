@@ -3,6 +3,10 @@
   "version": "0.0.2",
   "description": "A brainfuck to Javascript compiler with optimizations.",
   "main": "index.js",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/toish/unfuck.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

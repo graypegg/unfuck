@@ -9,8 +9,13 @@ function generate (settings, program) {
 	} else if (settings.out == Number) {
 		var output = "return o";
 	}
+	if (settings.type == Array) {
+		var type = "Array(" + settings.width + ").fill(0)"
+	} else {
+		var type = settings.type.name + "(" + settings.width + ")"
+	}
 
-	var header = "(function(i){o=[];" + input + ";t=new " + settings.type.name + "(" + settings.width + ");p=0;";
+	var header = "(function(i){o=[];" + input + ";t=new " + type + ";p=0;";
 	var footer = output + "})";
 	return header + program.join(';') + ';' + footer;
 }
