@@ -61,12 +61,5 @@ module.exports = [
 				})
 			}
 		}
-	},
-	{
-		/**
-		 * Find infinite loops that don't match the "[]" symbol.
-		 */
-		"pattern": /^\[(\[\])+\]/,
-		"action": function (matched, ast) { }
 	}
 ]
