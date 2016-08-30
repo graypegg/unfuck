@@ -77,7 +77,7 @@ function convert (ast) {
 			 */
 			case "RINP":
 				let id = uniq.next().value;
-				program.push("for(" + id + "=0;" + id + "<=i.length;" + id + "++){t[p+" + id + "]=i[" + id + "]};p+=" + id + "-1");
+				program.push("for(var " + id + "=0;" + id + "<=i.length;" + id + "++){t[p+" + id + "]=i[" + id + "]};p+=" + id + "-1");
 				break;
 
 			/**
