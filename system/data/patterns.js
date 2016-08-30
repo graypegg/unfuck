@@ -18,6 +18,9 @@ var helpers = {
 
 module.exports = [
 	{
+		/**
+		 * Find a common implimentation of multiplication.
+		 */
 		"pattern": /^[\+\-]+\[>[\+\-]+<-\]/,
 		"action": function (matched, ast) {
 			var one = helpers.sum(/^[\+\-]+(?=\[>)/.exec(matched)[0]);
@@ -45,6 +48,9 @@ module.exports = [
 		}
 	},
 	{
+		/**
+		 * Collapse long strings of INC and DEC into their sum.
+		 */
 		"pattern": /^([\+]+[\-]+)+/,
 		"action": function (matched, ast) {
 			var sum = helpers.sum(matched);
@@ -55,5 +61,12 @@ module.exports = [
 				})
 			}
 		}
+	},
+	{
+		/**
+		 * Find infinite loops that don't match the "[]" symbol.
+		 */
+		"pattern": /^\[(\[\])+\]/,
+		"action": function (matched, ast) { }
 	}
 ]

@@ -21,7 +21,17 @@ module.exports = [
 	{
 		"symbol": ",[>,]",
 		"ast": {
-			"is": "RPL"
+			"is": "RINP"
 		}
+	},
+	{
+		"symbol": "[.>]",
+		"ast": {
+			"is": "ROUT"
+		}
+	},
+	{
+		"symbol": "[]",
+		"ast": false
 	}
 ]

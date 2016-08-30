@@ -11,7 +11,7 @@ function analyse (program) {
 		var symbol = symbolCheck(program, i, ast);
 
 		if (symbol) {
-			ast.push(symbol.ast);
+			if (symbol.ast) ast.push(symbol.ast);
 			i = symbol.i;
 		} else {
 
