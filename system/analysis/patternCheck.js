@@ -6,7 +6,7 @@ function patternCheck (program, i, ast) {
 		var virtualAst = [];
 		var matched = pattern[0].pattern.exec(program.substring(i))[0];
 		if (pattern[0].action) pattern[0].action(matched, virtualAst);
-		virtualAst.push(pattern[0].ast);
+		if (pattern[0].ast) virtualAst.push(pattern[0].ast);
 		return({
 			ast: virtualAst,
 			i: i + matched.length

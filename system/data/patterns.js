@@ -7,6 +7,15 @@ var helpers = {
 	}
 }
 
+/**
+ * ---------- A note on Brainfuck patterns ----------
+ * You must replicate the side effects that
+ * would normally occur if the program was run
+ * in a Brainfuck interpreter! The action method
+ * takes the AST as a second argument, use this
+ * to set up the environment for your pattern to run.
+ */
+
 module.exports = [
 	{
 		"pattern": /^[\+\-]+\[>[\+\-]+<-\]/,
@@ -14,21 +23,37 @@ module.exports = [
 			var one = helpers.sum(/^[\+\-]+(?=\[>)/.exec(matched)[0]);
 			var two = helpers.sum(/[\+\-]+(?=<-\])/.exec(matched)[0]);
 
-			ast.push({
-				is: "INC",
-				body: one
-			})
+			if (one != 0) {
+				ast.push({
+					is: (one > 0 ? "INC" : "DEC"),
+					body: Math.abs(one)
+				})
+			}
 			ast.push({
 				is: "SFT",
 				body: 1
 			})
+			if (two != 0) {
+				ast.push({
+					is: (two > 0 ? "INC" : "DEC"),
+					body: Math.abs(two)
+				})
+			}
 			ast.push({
-				is: "INC",
-				body: two
+				is: "MUL"
 			})
-		},
-		"ast": {
-			"is": "MUL"
+		}
+	},
+	{
+		"pattern": /^([\+]+[\-]+)+/,
+		"action": function (matched, ast) {
+			var sum = helpers.sum(matched);
+			if (sum != 0) {
+				ast.push({
+					is: (sum > 0 ? "INC" : "DEC"),
+					body: Math.abs(sum)
+				})
+			}
 		}
 	}
 ]
