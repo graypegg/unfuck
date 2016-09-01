@@ -1,3 +1,4 @@
+"use strict";
 require('use-strict')
 var prepare  = require('./system/prepare');
 var analyse  = require('./system/analyse');
@@ -11,35 +12,33 @@ var initSettings = {
 	out: String
 }
 
-module.exports = {
-	compiler ( settings ) {
+module.exports = class Compiler {
+	constructor ( settings ) {
 		this.settings = Object.assign(initSettings, settings);
+	}
 
-		this.compile = function ( rawBf ) {
-			var bf  = prepare(rawBf);
-			var ast = analyse(bf);
-			var js  = generate(this.settings, convert(ast));
+	compile ( rawBf ) {
+		var bf  = prepare(rawBf);
+		var ast = analyse(bf);
+		var js  = generate(this.settings, convert(ast));
 
-			return {
-				bf, ast, js
-			};
-		}
+		return {
+			bf, ast, js
+		};
+	}
 
-		this.use = function ( bf ) {
-			return eval(this.compile(bf).js);
-		}
+	use ( bf ) {
+		return eval(this.compile(bf).js);
+	}
 
-		this.run = function ( bf, inp ) {
-			if (inp == undefined) {
-				if (this.settings.in == Number) {
-					inp = [];
-				} else {
-					inp = "";
-				}
+	run ( bf, inp ) {
+		if (inp == undefined) {
+			if (this.settings.in == Number) {
+				inp = [];
+			} else {
+				inp = "";
 			}
-			return this.use(bf)(inp);
 		}
-
-		return this;
+		return this.use(bf)(inp);
 	}
 }
