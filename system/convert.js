@@ -1,6 +1,5 @@
-var tapeActions = require('./data/tapeActions');
-
 function convert (ast) {
+	var tapeActions = require('./data/tapeActions');
 	var program = [];
 
 	ast.forEach(function (ins) {

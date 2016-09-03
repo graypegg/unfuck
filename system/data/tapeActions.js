@@ -17,7 +17,8 @@
  *   the ineffecencies of Brainfuck.
  */
 
-var helpers = require('../helpers/tapeActions')
+var helpers = require('../helpers/tapeActions');
+var convert = require('../convert');
 module.exports = {
 	/**
 	 * Increment current cell by `body`.
