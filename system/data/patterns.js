@@ -61,5 +61,23 @@ module.exports = [
 				})
 			}
 		}
+	},
+	{
+		/**
+		 * Collapse long strings of SFT into their sum.
+		 */
+		"pattern": /^([\>]+[\<]+)+/,
+		"action": function (matched, ast) {
+			var right = (matched.match(/\>/) ? matched.match(/\>/g).length : 0);
+			var left = (matched.match(/\</) ? matched.match(/\</g).length : 0);
+			var sum = right-left;
+
+			if (sum != 0) {
+				ast.push({
+					is: "SFT",
+					body: sum
+				})
+			}
+		}
 	}
 ]
