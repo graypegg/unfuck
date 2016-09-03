@@ -1,28 +1,36 @@
-var helpers = {
-	sum (bf) {
-		var add = (bf.match(/\+/) ? bf.match(/\+/g).length : 0);
-		var sub = (bf.match(/\-/) ? bf.match(/\-/g).length : 0);
-
-		return add-sub;
-	}
-}
-
 /**
- * ---------- A note on Brainfuck patterns ----------
- * You must replicate the side effects that
- * would normally occur if the program was run
- * in a Brainfuck interpreter! The action method
- * takes the AST as a second argument, use this
- * to set up the environment for your pattern to run.
+ * Use this file for amending the AST for complex
+ * patterns that can be detected via a regaulr exp.
+ * 
+ * Regular expressions will be matched against the
+ * remaining Brainfuck that has not been converted to
+ * into the AST. Thus you should start all patterns
+ * with:
+ * 
+ * 		pattern: /^ ...
+ * 		
+ * 	to match the begining of the line and not detect
+ * 	the same pattern appearing further into the
+ * 	program.
+ * 	
+ * 	The action function is passed the matched string
+ * 	from the Brainfuck program and an empty AST to
+ * 	push to. You can add as many AST actions as you
+ * 	need to emulate the side effects of Brainfuck.
+ * 
+ * - Remember! ---------------------------------------
+ * > AST must produce the same side effects brainfuck
+ *   produces!
  */
 
+var helpers = require('../helpers/patterns');
 module.exports = [
 	{
 		/**
 		 * Find a common implimentation of multiplication.
 		 */
-		"pattern": /^[\+\-]+\[>[\+\-]+<-\]/,
-		"action": function (matched, ast) {
+		pattern: /^[\+\-]+\[>[\+\-]+<-\]/,
+		action: function (matched, ast) {
 			var one = helpers.sum(/^[\+\-]+(?=\[>)/.exec(matched)[0]);
 			var two = helpers.sum(/[\+\-]+(?=<-\])/.exec(matched)[0]);
 
@@ -51,8 +59,8 @@ module.exports = [
 		/**
 		 * Collapse long strings of INC and DEC into their sum.
 		 */
-		"pattern": /^([\+]+[\-]+)+/,
-		"action": function (matched, ast) {
+		pattern: /^([\+]+[\-]+)+/,
+		action: function (matched, ast) {
 			var sum = helpers.sum(matched);
 			if (sum != 0) {
 				ast.push({
@@ -66,8 +74,8 @@ module.exports = [
 		/**
 		 * Collapse long strings of SFT into their sum.
 		 */
-		"pattern": /^([\>]+[\<]+)+/,
-		"action": function (matched, ast) {
+		pattern: /^([\>]+[\<]+)+/,
+		action: function (matched, ast) {
 			var right = (matched.match(/\>/) ? matched.match(/\>/g).length : 0);
 			var left = (matched.match(/\</) ? matched.match(/\</g).length : 0);
 			var sum = right-left;
