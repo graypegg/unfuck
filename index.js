@@ -6,7 +6,10 @@ var convert  = require('./system/convert');
 var generate = require('./system/generate');
 
 var initSettings = {
-	type: Uint16Array,
+	type: {
+		tape: Uint16Array,
+		lang: "js"
+	},
 	width: 255,
 	in: String,
 	out: String
@@ -20,15 +23,16 @@ module.exports = class Compiler {
 	compile ( rawBf ) {
 		var bf  = prepare(rawBf);
 		var ast = analyse(bf);
-		var js  = generate(this.settings, convert(ast));
+		var pre = convert(this.settings, ast);
+		var out = generate(this.settings, pre);
 
 		return {
-			bf, ast, js
+			bf, ast, out
 		};
 	}
 
 	use ( bf ) {
-		return eval(this.compile(bf).js);
+		return eval(this.compile(bf).out);
 	}
 
 	run ( bf, inp ) {

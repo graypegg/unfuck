@@ -9,10 +9,10 @@ function generate (settings, program) {
 	} else if (settings.out == Number) {
 		var output = "return o";
 	}
-	if (settings.type == Array) {
+	if (settings.type.lang == "js" && settings.type.tape == Array) {
 		var type = "Array(" + settings.width + ").fill(0)"
 	} else {
-		var type = settings.type.name + "(" + settings.width + ")"
+		var type = settings.type.tape.name + "(" + settings.width + ")"
 	}
 
 	var header = "(function(i){var o=[];" + input + ";var t=new " + type + ";var p=0;";
