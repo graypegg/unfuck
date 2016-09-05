@@ -22,12 +22,6 @@
 		}
 	},
 	{
-		symbol: "[>+<-]",
-		ast: {
-			is: "SUM"
-		}
-	},
-	{
 		symbol: ",[>,]",
 		ast: {
 			is: "RINP"
