@@ -10,7 +10,7 @@ var uf = require('unfuck');
 ```
 
 ## API
-`uf.compiler({ Settings Object })`
+`new uf({ Settings Object })`
 
 Returns a compiler object preloaded with the settings provided.
 
