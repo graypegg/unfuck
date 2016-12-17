@@ -20,7 +20,7 @@ Returns a compiler object preloaded with the settings provided.
 	in: <Number | String>,
 	out: <Number | String>,
 	width: <Any Integer>,
-  allowNegative: <Boolean>
+	allowNegative: <Boolean>
 }
 ```
 
@@ -62,35 +62,35 @@ Which outputs the following:
 
 ```javascript
 {
-  "bf": "++++++[>++++++++++<-]>+++++.",
-  "ast": [
-    {
-      "is": "INC",
-      "body": 6
-    },
-    {
-      "is": "SFT",
-      "body": 1
-    },
-    {
-      "is": "INC",
-      "body": 10
-    },
-    {
-      "is": "MUL"
-    },
-    {
-      "is": "SFT",
-      "body": 1
-    },
-    {
-      "is": "INC",
-      "body": 5
-    },
-    {
-      "is": "OUT"
-    }
-  ],
-  "js": "(function(i){o=[];i=i||[];t=new Uint16Array(9999);p=0;t[p]+=6;p+=1;t[p]+=10;t[p]=t[p]*t[p-1];p+=-1;p+=1;t[p]+=5;o.push(t[p]);return o.map(x=>String.fromCharCode(x)).join('')})"
+	"bf": "++++++[>++++++++++<-]>+++++.",
+	"ast": [
+		{
+			"is": "INC",
+			"body": 6
+		},
+		{
+			"is": "SFT",
+			"body": 1
+		},
+		{
+			"is": "INC",
+			"body": 10
+		},
+		{
+			"is": "MUL"
+		},
+		{
+			"is": "SFT",
+			"body": 1
+		},
+		{
+			"is": "INC",
+			"body": 5
+		},
+		{
+			"is": "OUT"
+		}
+	],
+	"js": "(function(i){o=[];i=i||[];t=new Uint16Array(9999);p=0;t[p]+=6;p+=1;t[p]+=10;t[p]=t[p]*t[p-1];p+=-1;p+=1;t[p]+=5;o.push(t[p]);return o.map(x=>String.fromCharCode(x)).join('')})"
 }
 ```
