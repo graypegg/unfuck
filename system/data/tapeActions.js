@@ -23,21 +23,23 @@ module.exports = {
 	/**
 	 * Increment current cell by `body`.
 	 */
-	INC: function (ins, program) {
+	INC: function (settings, ins, program) {
 		program.push("t[p]+=" + ins.body);
 	},
 
 	/**
 	 * Decrement current cell by `body`.
+	 * 
 	 */
-	DEC: function (ins, program) {
-		program.push("t[p]-=" + ins.body);
+	DEC: function (settings, ins, program) {
+		if (settings.allowNegatives) program.push("t[p]-=" + ins.body);
+		else program.push("t[p]=(t[p]-" + ins.body + "<=0?0:t[p]-" + ins.body + ")");
 	},
 
 	/**
 	 * Set current cell to `body`.
 	 */
-	SET: function (ins, program) {
+	SET: function (settings, ins, program) {
 		program.push("t[p]=" + ins.body);
 	},
 
@@ -46,7 +48,7 @@ module.exports = {
 	 * Result in next cell.
 	 * Current cell set to 0.
 	 */
-	SUM: function (ins, program) {
+	SUM: function (settings, ins, program) {
 		program.push("t[p+1]=t[p]+t[p+1];t[p]=0");
 	},
 
@@ -56,35 +58,35 @@ module.exports = {
 	 * Shift to previous cell.
 	 * Previous cell set to 0.
 	 */
-	MUL: function (ins, program) {
+	MUL: function (settings, ins, program) {
 		program.push("t[p]=t[p]*t[p-1];p+=-1;t[p]=0");
 	},
 
 	/**
 	 * Output current cell to output array.
 	 */
-	OUT: function (ins, program) {
+	OUT: function (settings, ins, program) {
 		program.push("o.push(t[p])");
 	},
 
 	/**
 	 * Output and shift right till current cell is 0.
 	 */
-	ROUT: function (ins, program) {
+	ROUT: function (settings, ins, program) {
 		program.push("while(t[p]!=0){o.push(t[p]);p+=1}");
 	},
 
 	/**
 	 * Pop top value off input array and set to current cell.
 	 */
-	INP: function (ins, program) {
+	INP: function (settings, ins, program) {
 		program.push("t[p]=(i.length<1?0:i.shift())");
 	},
 
 	/**
 	 * Input and shift right till input array is empty.
 	 */
-	RINP: function (ins, program) {
+	RINP: function (settings, ins, program) {
 		let id = helpers.uniq.next().value;
 		program.push("for(var " + id + "=0;" + id + "<=i.length;" + id + "++){t[p+" + id + "]=i[" + id + "]};p+=" + id + "-1");
 	},
@@ -92,7 +94,7 @@ module.exports = {
 	/**
 	 * Shift the current cell ID left or right by `body`.
 	 */
-	SFT: function (ins, program) {
+	SFT: function (settings, ins, program) {
 		program.push("p+=" + ins.body);
 	},
 
@@ -100,7 +102,7 @@ module.exports = {
 	 * Conditionally loop `body` if current cell is not 0 and the begining of each loop.
 	 * Skip entirly if current cell is 0.
 	 */
-	IF: function (ins, program) {
-		program.push("while(t[p]!=0){" + (convert(ins.body).join(';')) + "}");
+	IF: function (settings, ins, program) {
+		program.push("while(t[p]!=0){" + (convert(settings, ins.body).join(';')) + "}");
 	}
 }

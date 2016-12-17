@@ -8,7 +8,8 @@ var initSettings = {
 	type: Uint16Array,
 	width: 255,
 	in: String,
-	out: String
+	out: String,
+	allowNegatives: false
 }
 
 module.exports = {
@@ -18,7 +19,7 @@ module.exports = {
 		this.compile = function ( rawBf ) {
 			var bf  = prepare(rawBf);
 			var ast = analyse(bf);
-			var js  = generate(this.settings, convert(ast));
+			var js  = generate(this.settings, convert(this.settings, ast));
 
 			return {
 				bf, ast, js
