@@ -19,7 +19,8 @@ Returns a compiler object preloaded with the settings provided.
 	type: <Any Array-like object, typed arrays work best>,
 	in: <Number | String>,
 	out: <Number | String>,
-	width: <Any Integer>
+	width: <Any Integer>,
+  allowNegative: <Boolean>
 }
 ```
 
