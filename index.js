@@ -2,9 +2,10 @@ require('use-strict')
 var prepare  = require('./system/prepare');
 var analyse  = require('./system/analyse');
 var convert  = require('./system/convert');
-var generate = require('./system/generate');
+var wrap     = require('./system/wrap');
 
 var initSettings = {
+	lang: "standard",
 	type: Uint16Array,
 	width: 255,
 	in: String,
@@ -17,9 +18,10 @@ module.exports = {
 		this.settings = Object.assign(initSettings, settings);
 
 		this.compile = function ( rawBf ) {
-			var bf  = prepare(rawBf);
-			var ast = analyse(bf);
-			var js  = generate(this.settings, convert(this.settings, ast));
+			var bf  = prepare(this.settings, rawBf);
+			var ast = analyse(this.settings, bf);
+			var raw = convert(this.settings, ast);
+			var js  = wrap(this.settings, raw);
 
 			return {
 				bf, ast, js

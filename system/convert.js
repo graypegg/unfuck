@@ -1,4 +1,4 @@
-function convert (settings, ast) {
+function convert ( settings, ast ) {
 	var tapeActions = require('./data/tapeActions');
 	var program = [];
 

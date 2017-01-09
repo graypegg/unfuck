@@ -1,4 +1,4 @@
-function generate (settings, program) {
+function wrap (settings, program) {
 	if (settings.in == String) {
 		var input = "var i=i.split('').map(x=>x.charCodeAt())||[]";
 	} else if (settings.in == Number) {
@@ -20,4 +20,4 @@ function generate (settings, program) {
 	return header + program.join(';') + ';' + footer;
 }
 
-module.exports = generate;
+module.exports = wrap;

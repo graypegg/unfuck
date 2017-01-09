@@ -1,7 +1,7 @@
 var symbolCheck = require('./analysis/symbolCheck');
 var patternCheck = require('./analysis/patternCheck');
 
-function analyse (program) {
+function analyse ( settings, program ) {
 	var ast = [];
 	var i = 0;
 

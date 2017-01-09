@@ -2,7 +2,7 @@ var valid = [
 	'+','-','>','<','[',']','.',','
 ]
 
-function prepare ( bf ) {
+function prepare ( settings, bf ) {
 	var program = bf.split('').filter(x => valid.indexOf(x) > -1).join('');
 	if (program[0] == "[") {
 		var i = 0;
