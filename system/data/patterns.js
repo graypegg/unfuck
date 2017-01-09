@@ -1,23 +1,23 @@
 /**
  * Use this file for amending the AST for complex
  * patterns that can be detected via a regaulr exp.
- * 
+ *
  * Regular expressions will be matched against the
  * remaining Brainfuck that has not been converted to
  * into the AST. Thus you should start all patterns
  * with:
- * 
+ *
  * 		pattern: /^ ...
- * 		
+ *
  * 	to match the begining of the line and not detect
  * 	the same pattern appearing further into the
  * 	program.
- * 	
+ *
  * 	The action function is passed the matched string
  * 	from the Brainfuck program and an empty AST to
  * 	push to. You can add as many AST actions as you
  * 	need to emulate the side effects of Brainfuck.
- * 
+ *
  * - Remember! ---------------------------------------
  * > AST must produce the same side effects brainfuck
  *   produces!
@@ -61,7 +61,7 @@ module.exports = [
 		 */
 		pattern: /^([\+]+[\-]+)+/,
 		action: function (matched, ast) {
-			var sum = helpers.sum(matched);
+			var sum = helpers.sum(/\+/g, /\-/g, matched);
 			if (sum != 0) {
 				ast.push({
 					is: (sum > 0 ? "INC" : "DEC"),
@@ -76,10 +76,7 @@ module.exports = [
 		 */
 		pattern: /^([\>]+[\<]+)+/,
 		action: function (matched, ast) {
-			var right = (matched.match(/\>/) ? matched.match(/\>/g).length : 0);
-			var left = (matched.match(/\</) ? matched.match(/\</g).length : 0);
-			var sum = right-left;
-
+            var sum = helpers.sum(/\>/g, /\</g, matched);
 			if (sum != 0) {
 				ast.push({
 					is: "SFT",
