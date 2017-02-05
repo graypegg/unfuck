@@ -103,7 +103,7 @@ function analyse ( settings, program ) {
 
 					ast.push({
 						is: "IF",
-						body: analyse(init)
+						body: analyse(settings, init)
 					});
 				}
 
