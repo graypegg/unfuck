@@ -6,12 +6,12 @@ var convert  = require('./system/convert');
 var wrap     = require('./system/wrap');
 
 var initSettings = {
-	lang: "standard",
+	language: "standard",
+	target: "pure-es6",
 	type: Uint8Array,
-	width: 255,
+	width: 10240,
 	in: String,
-	out: String,
-	allowNegatives: true
+	out: String
 }
 
 module.exports = {
