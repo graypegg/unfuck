@@ -6,11 +6,11 @@ var wrap     = require('./system/wrap');
 
 var initSettings = {
 	lang: "standard",
-	type: Uint16Array,
+	type: Uint8Array,
 	width: 255,
 	in: String,
 	out: String,
-	allowNegatives: false
+	allowNegatives: true
 }
 
 module.exports = {
