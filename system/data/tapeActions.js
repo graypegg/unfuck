@@ -44,16 +44,7 @@ module.exports = {
 	},
 
 	/**
-	 * Sum the current and next cell.
-	 * Result in next cell.
-	 * Current cell set to 0.
-	 */
-	SUM: function (settings, ins, program) {
-		program.push("t[p+1]=t[p]+t[p+1];t[p]=0");
-	},
-
-	/**
-	 * Multiply cellOne by cellTwo.
+	 * Multiply `cellOne` by `cellTwo`.
 	 * Result in current cell.
 	 */
 	MUL: function (settings, ins, program) {
