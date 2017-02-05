@@ -17,23 +17,15 @@
  *   the ineffecencies of Brainfuck.
  */
 
-var helpers = require('../helpers/tapeActions');
-var convert = require('../convert');
+var helpers = require('../../helpers/targets');
+var convert = require('../../convert');
+
 module.exports = {
 	/**
-	 * Increment current cell by `body`.
+	 * Increment/Decrement current cell by `body`.
 	 */
-	INC: function (settings, ins, program) {
+	SFT: function (settings, ins, program) {
 		program.push("t[p]+=" + ins.body);
-	},
-
-	/**
-	 * Decrement current cell by `body`.
-	 *
-	 */
-	DEC: function (settings, ins, program) {
-		if (settings.allowNegatives) program.push("t[p]-=" + ins.body);
-		else program.push("t[p]=(t[p]-" + ins.body + "<=0?0:t[p]-" + ins.body + ")");
 	},
 
 	/**
@@ -59,13 +51,6 @@ module.exports = {
 	},
 
 	/**
-	 * Output and shift right till current cell is 0.
-	 */
-	ROUT: function (settings, ins, program) {
-		program.push("while(t[p]!=0){o.push(t[p]);p+=1}");
-	},
-
-	/**
 	 * Pop top value off input array and set to current cell.
 	 */
 	INP: function (settings, ins, program) {
@@ -73,17 +58,9 @@ module.exports = {
 	},
 
 	/**
-	 * Input and shift right till input array is empty.
+	 * Move the current cell left or right by `body`.
 	 */
-	RINP: function (settings, ins, program) {
-		let id = helpers.uniq.next().value;
-		program.push("for(var " + id + "=0;" + id + "<=i.length;" + id + "++){t[p+" + id + "]=i[" + id + "]};p+=" + id + "-1");
-	},
-
-	/**
-	 * Shift the current cell ID left or right by `body`.
-	 */
-	SFT: function (settings, ins, program) {
+	MOV: function (settings, ins, program) {
 		program.push("p+=" + ins.body);
 	},
 

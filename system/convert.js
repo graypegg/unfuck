@@ -1,10 +1,10 @@
 function convert ( settings, ast ) {
-	var tapeActions = require('./data/tapeActions');
+	var target = require('./language/targets/javascript');
 	var program = [];
 
 	ast.forEach(function (ins) {
-		if (tapeActions[ins.is]) {
-			tapeActions[ins.is](settings, ins, program);
+		if (target[ins.is]) {
+			target[ins.is](settings, ins, program);
 		}
 	})
 

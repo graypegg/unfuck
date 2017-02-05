@@ -2,7 +2,7 @@ module.exports = {
     // Addition Operator //
     '+': function (settings, i, program, ast) {
         ast.push({
-            is: "INC",
+            is: "SFT",
             body: 1
         })
         return ++i;
@@ -11,8 +11,8 @@ module.exports = {
     // Subtraction Operator //
     '-': function (settings, i, program, ast) {
         ast.push({
-            is: "DEC",
-            body: 1
+            is: "SFT",
+            body: -1
         })
         return ++i;
     },
@@ -33,19 +33,19 @@ module.exports = {
         return ++i;
     },
 
-    // Shift Right Operator //
+    // Move Right Operator //
     '>': function (settings, i, program, ast) {
         ast.push({
-            is: "SFT",
+            is: "MOV",
             body: 1
         })
         return ++i;
     },
 
-    // Shift Left Operator //
+    // Move Left Operator //
     '<': function (settings, i, program, ast) {
         ast.push({
-            is: "SFT",
+            is: "MOV",
             body: -1
         })
         return ++i;
@@ -53,7 +53,7 @@ module.exports = {
 
     // Loop/If Operator //
     '[': function (settings, i, program, ast) {
-		var analyse  = require('../analyse');
+		var analyse  = require('../../analyse');
 
         let init = "";
         let open = 1;

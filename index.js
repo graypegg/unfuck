@@ -1,6 +1,7 @@
 require('use-strict')
 var prepare  = require('./system/prepare');
 var analyse  = require('./system/analyse');
+var optimise = require('./system/optimise');
 var convert  = require('./system/convert');
 var wrap     = require('./system/wrap');
 
@@ -20,6 +21,7 @@ module.exports = {
 		this.compile = function ( rawBf ) {
 			var bf  = prepare(this.settings, rawBf);
 			var ast = analyse(this.settings, bf);
+				ast = optimise(this.settings, ast);
 			var raw = convert(this.settings, ast);
 			var js  = wrap(this.settings, raw);
 
