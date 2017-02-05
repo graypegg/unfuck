@@ -31,27 +31,44 @@ module.exports = [
 		 */
 		pattern: /^[\+\-]+\[>[\+\-]+<-\]/,
 		action: function (matched, ast) {
-			var one = helpers.sum(/^[\+\-]+(?=\[>)/.exec(matched)[0]);
-			var two = helpers.sum(/[\+\-]+(?=<-\])/.exec(matched)[0]);
+			var one = helpers.sum(/\+/g, /\-/g, /^[\+\-]+(?=\[>)/.exec(matched)[0]);
+			var two = helpers.sum(/\+/g, /\-/g, /[\+\-]+(?=<-\])/.exec(matched)[0]);
 
-			if (one != 0) {
+			if (one !== 0) {
 				ast.push({
 					is: (one > 0 ? "INC" : "DEC"),
 					body: Math.abs(one)
 				})
 			}
+
 			ast.push({
 				is: "SFT",
 				body: 1
 			})
-			if (two != 0) {
+
+			if (two !== 0) {
 				ast.push({
 					is: (two > 0 ? "INC" : "DEC"),
 					body: Math.abs(two)
 				})
 			}
+
 			ast.push({
-				is: "MUL"
+				is: "MUL",
+				body: {
+					cellOne: -1,
+					cellTwo: 0
+				}
+			})
+
+			ast.push({
+				is: "SFT",
+				body: -1
+			})
+
+			ast.push({
+				is: "SET",
+				body: 0
 			})
 		}
 	},

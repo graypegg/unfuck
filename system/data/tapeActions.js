@@ -1,17 +1,17 @@
 /**
  * Use this file to convert the generated AST to
  * a JS function. Here's some syntax to remember:
- * 
+ *
  * t    = Tape array
  * p    = Current tape cell position
  * t[p] = Current cell
  * o    = Output array
  * i    = Input array
- * 
+ *
  * - Remember! ---------------------------------------
  * > Code must produce the same side effects brainfuck
  *   produces!
- *   
+ *
  * > Use the minimum amount of JS as this compiler can
  *   can produce a huge amount of output code due to
  *   the ineffecencies of Brainfuck.
@@ -29,7 +29,7 @@ module.exports = {
 
 	/**
 	 * Decrement current cell by `body`.
-	 * 
+	 *
 	 */
 	DEC: function (settings, ins, program) {
 		if (settings.allowNegatives) program.push("t[p]-=" + ins.body);
@@ -53,13 +53,11 @@ module.exports = {
 	},
 
 	/**
-	 * Multiply current cell by previous cell.
+	 * Multiply cellOne by cellTwo.
 	 * Result in current cell.
-	 * Shift to previous cell.
-	 * Previous cell set to 0.
 	 */
 	MUL: function (settings, ins, program) {
-		program.push("t[p]=t[p]*t[p-1];p+=-1;t[p]=0");
+		program.push("t[p]=t[p+(" + ins.body.cellOne + ")]*t[p+(" + ins.body.cellTwo + ")]");
 	},
 
 	/**
