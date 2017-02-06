@@ -15,7 +15,8 @@ var initSettings = {
 
 module.exports = {
 	compiler ( settings ) {
-		this.settings = Object.assign(initSettings, settings);
+		this.settings = Object.assign({}, initSettings);
+		this.settings = Object.assign(this.settings, settings);
 
 		this.compile = function ( rawBf ) {
 			var bf  = prepare(this.settings, rawBf);
