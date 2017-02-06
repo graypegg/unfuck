@@ -1,4 +1,3 @@
-require('use-strict')
 var prepare  = require('./system/prepare');
 var analyse  = require('./system/analyse');
 var optimise = require('./system/optimise');

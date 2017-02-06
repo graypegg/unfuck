@@ -19,7 +19,5 @@
   ],
   "author": "Toish <toish@digitalpanda.ca>",
   "license": "ISC",
-  "dependencies": {
-    "use-strict": "^1.0.1"
-  }
+  "dependencies": {}
 }
