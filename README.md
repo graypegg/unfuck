@@ -1,4 +1,8 @@
+# Unf*ck.
+
 This module exposes a simple API to convert Brainf*ck to a Javascript function.
+
+[![codecov](https://codecov.io/gh/toish/unfuck/branch/master/graph/badge.svg)](https://codecov.io/gh/toish/unfuck)
 
 ## Installation
 ```bash
