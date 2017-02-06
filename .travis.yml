@@ -1,3 +1,8 @@
 language: node_js
 node_js:
   - "6"
+install:
+  - npm install -g codecov
+script:
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+  - codecov -t 2a2d74d6-2f58-4d79-8ed1-c3dcd0263e33
