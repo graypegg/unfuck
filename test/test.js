@@ -3,7 +3,6 @@ let analyse  = require('../system/analyse');
 let optimise = require('../system/optimise');
 let convert  = require('../system/convert');
 let wrap     = require('../system/wrap');
-let helpers  = require('../system/helpers/targets');
 let index    = require('../index');
 
 let assert  = require('assert');

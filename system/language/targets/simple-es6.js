@@ -2,7 +2,6 @@
  * -- Unfuck Compilation Target: `pure-es6` --
  */
 
-var helpers = require('../../helpers/targets');
 var convert = require('../../convert');
 
 module.exports = {
