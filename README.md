@@ -25,34 +25,34 @@ Returns a compiler object preloaded with the settings provided.
 ```
 
 ### type
-**Takes:** An array constructor
-**Default:** `Uint8Array`
+**Takes:** An array constructor<br>
+**Default:** `Uint8Array`<br>
 Dictates the type of the array representing the 'tape'. I suggest using [typed arrays](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray#TypedArray_objects) because most versions of Brainfuck require some kind of bounded integer, but you can use the `Array` constructor as a value here for full 64bit integers. (Uint8Array is the most common, this bounds the values in the tape between 0 and 254)
 
 ### width
-**Takes:** `Number`
-**Default:** `10240`
+**Takes:** `Number`<br>
+**Default:** `10240`<br>
 The length of the 'tape'. Values at cells beyond this number, or less than 0, result in a error. You'll want this to be high, but not too high, as all cells are initiated with the value `0`, so 10240 8bit cells uses 10kB of memory at start-up. *(The size of each cell is determined by the type setting)*
 
 ### in
-**Takes:** A type constructor (`String` or `Number`)
-**Default:** `String`
+**Takes:** A type constructor (`String` or `Number`)<br>
+**Default:** `String`<br>
 The type of data the resulting javascript function will take as input. (The target option determines the source of input.)
  
 * If it's set to `String`, the function will insert each [charCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) sequentially when `,` is used.
 * If it's set to `Number`, the function will insert the number supplied as input sequentially when `,` is used.
 
 ### out
-**Takes:** A type constructor (`String` or `Number`)
-**Default:** `String`
+**Takes:** A type constructor (`String` or `Number`)<br>
+**Default:** `String`<br>
 The type of data the resulting javascript function will return or include in it's output callback. (The target option determines the mode of output.)
  
 * If it's set to `String`, the function will convert the number on the tape to a character via [fromCharCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)
 * If it's set to `Number`, the function will return the numerical value of the cell on the tape.
 
 ### target
-**Takes:** `String`
-**Default:** `'simple-es6'`
+**Takes:** `String`<br>
+**Default:** `'simple-es6'`<br>
 Unfuck comes with a couple different compilation targets which affect how the outputted javascript can be used.
 
 | Name | Description | Example Usage |
