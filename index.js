@@ -7,7 +7,7 @@ var wrap     = require('./system/wrap');
 
 var initSettings = {
 	language: "standard",
-	target: "pure-es6",
+	target: "simple-es6",
 	type: Uint8Array,
 	width: 10240,
 	in: String,
@@ -34,15 +34,8 @@ module.exports = {
 			return eval(this.compile(bf).js);
 		}
 
-		this.run = function ( bf, inp ) {
-			if (inp == undefined) {
-				if (this.settings.in == Number) {
-					inp = [];
-				} else {
-					inp = "";
-				}
-			}
-			return this.use(bf)(inp);
+		this.run = function ( bf, ...params ) {
+			return this.use(bf)(...params);
 		}
 
 		return this;
