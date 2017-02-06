@@ -1,8 +1,6 @@
-# Unf*ck.
+# Unf*ck. [![Build Status](https://travis-ci.org/toish/unfuck.svg?branch=master)](https://travis-ci.org/toish/unfuck) [![codecov](https://codecov.io/gh/toish/unfuck/branch/master/graph/badge.svg)](https://codecov.io/gh/toish/unfuck)
 
 This module exposes a simple API to convert Brainf*ck to a Javascript function.
-
-[![codecov](https://codecov.io/gh/toish/unfuck/branch/master/graph/badge.svg)](https://codecov.io/gh/toish/unfuck)
 
 ## Installation
 ```bash

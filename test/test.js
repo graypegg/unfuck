@@ -3,6 +3,7 @@ let analyse  = require('../system/analyse');
 let optimise = require('../system/optimise');
 let convert  = require('../system/convert');
 let wrap     = require('../system/wrap');
+let helpers  = require('../system/helpers/targets');
 let index    = require('../index');
 
 let assert  = require('assert');
@@ -85,6 +86,19 @@ describe('Settings', function() {
 			let bf  = '>>+.';
 			let c = index.compiler({ width: 2, out: Number });
 			assert.deepEqual(c.run(bf, ''), [ undefined ]);
+		});
+	});
+
+	describe('Interactive Target with optimization', function() {
+		it('should return 0 and NOT 10', function( done ) {
+			let bf  = ',++--[-].';
+			let c = index.compiler({ target: 'interactive-es6', in: Number, out: Number });
+
+			let inp = () => 10;
+			let out = (cell) => {
+				done(assert.equal(cell, 0));
+			}
+			c.run(bf, inp, out);
 		});
 	});
 });
