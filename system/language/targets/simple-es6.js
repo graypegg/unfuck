@@ -1,5 +1,5 @@
 /**
- * -- Unfuck Compilation Target: `pure-es6` --
+ * -- Unfuck Compilation Target: `simple-es6` --
  */
 
 var convert = require('../../convert');
