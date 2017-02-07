@@ -41,6 +41,23 @@ module.exports = {
 		},
 
 		/**
+		 * Multiply current cell by factors, and add to cells.
+		 */
+		MUL (settings, ins, program) {
+			ins.body.factors.forEach((factor) => {
+				var part = '';
+
+				if (factor.move > 0) part = 't[p+' + factor.move + ']';
+				else if (factor.move < 0) part = 't[p-' + Math.abs(factor.move) + ']';
+				else part = 't[p]';
+
+				if (factor.factor === 1) program.push(part + '+=t[p]');
+				else program.push(part + '+=t[p]*' + factor.factor);
+			})
+			program.push('t[p]=0');
+		},
+
+		/**
 		 * Output current cell to output array.
 		 */
 		OUT (settings, ins, program) {

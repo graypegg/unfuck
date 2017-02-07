@@ -1,5 +1,5 @@
 var fusible = ['SFT', 'MOV'];
-var fuseTriggers = ['SFT'];
+var fuseTriggers = ['SFT', 'MOV'];
 
 function fuseTemp (temp, causeMove) {
 	if (temp.length > 0) {
