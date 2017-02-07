@@ -28,7 +28,6 @@ module.exports = {
 
 			if (ins.body.value > 0) partTwo = "+=" + ins.body.value;
 			else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
-			else return;
 
 			program.push(partOne + partTwo);
 		},
