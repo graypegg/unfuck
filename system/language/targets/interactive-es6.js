@@ -14,6 +14,13 @@ module.exports = {
 		},
 
 		/**
+		 * Increment/Decrement a relativly-specified cell by `body.value`.
+		 */
+		RELSFT (settings, ins, program) {
+			program.push("t[p+(" + ins.body.move + ")]+=" + ins.body.value);
+		},
+
+		/**
 		 * Set current cell to `body`.
 		 */
 		SET (settings, ins, program) {

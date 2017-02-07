@@ -1,7 +1,8 @@
 var optimisers = [
 	require('./optimisers/collapse'),
 	require('./optimisers/nullify'),
-	require('./optimisers/setZero')
+	require('./optimisers/setZero'),
+	require('./optimisers/fuse')
 ];
 
 function optimise ( settings, ast ) {
