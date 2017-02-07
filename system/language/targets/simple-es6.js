@@ -28,14 +28,6 @@ module.exports = {
 		},
 
 		/**
-		 * Multiply `cellOne` by `cellTwo`.
-		 * Result in current cell.
-		 */
-		MUL (settings, ins, program) {
-			program.push("t[p]=t[p+(" + ins.body.cellOne + ")]*t[p+(" + ins.body.cellTwo + ")]");
-		},
-
-		/**
 		 * Output current cell to output array.
 		 */
 		OUT (settings, ins, program) {
