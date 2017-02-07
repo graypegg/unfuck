@@ -81,7 +81,7 @@ describe('Settings', function() {
 	});
 
 	describe('Tape Width', function() {
-		it('should return an array containing 65535, the highest possible unsigned 16bit integer', function() {
+		it('should return undefined', function() {
 			let bf  = '>>+.';
 			let c = index.compiler({ width: 2, out: Number });
 			assert.deepEqual(c.run(bf, ''), [ undefined ]);
@@ -98,6 +98,14 @@ describe('Settings', function() {
 				done(assert.equal(cell, 0));
 			}
 			c.run(bf, inp, out);
+		});
+	});
+
+	describe('Array tape type', function() {
+		it('should return [256,0], NOT [0,0]', function() {
+			let bf  = '+++++++++++++++[>+++++++++++++++++<-]>+.[-].';
+			let c = index.compiler({ type: Array, out: Number });
+			assert.deepEqual(c.run(bf, ''), [256, 0]);
 		});
 	});
 });
