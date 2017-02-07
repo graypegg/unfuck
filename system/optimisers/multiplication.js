@@ -5,7 +5,7 @@ function checkForLeftPattern (ast) {
 
 	var tail = ast.slice(1).map((ins) => {
 		var out = ins.is === 'RELSFT';
-		out = out && ins.body.move > 0;
+		out = out && ins.body.move !== 0;
 		out = out && ins.body.value > 0;
 		return out;
 	})
@@ -16,7 +16,7 @@ function checkForLeftPattern (ast) {
 function checkForRightPattern (ast) {
 	var head = ast.slice(0,-1).map((ins) => {
 		var out = ins.is === 'RELSFT';
-		out = out && ins.body.move > 0;
+		out = out && ins.body.move !== 0;
 		out = out && ins.body.value > 0;
 		return out;
 	})
