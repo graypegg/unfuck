@@ -34,11 +34,18 @@ function fuseTemp (temp, causeMove) {
 	}
 }
 
-function fuse ( settings, ast ) {
+function fuse ( settings, ast, inIf ) {
 	var temp = [];
 	var out = ast.reduce(( acc, ins ) => {
 		if (fusible.indexOf(ins.is) !== -1 && (temp.length === 0 ? fuseTriggers.indexOf(ins.is) !== -1 : true)) {
 			temp.push(ins);
+		} else if (ins.is === 'IF') {
+			acc = acc.concat(fuseTemp(temp, true));
+			temp = [];
+			acc.push({
+				is: 'IF',
+				body: fuse(settings, ins.body, true)
+			})
 		} else {
 			acc = acc.concat(fuseTemp(temp, true));
 			temp = [];
@@ -46,7 +53,7 @@ function fuse ( settings, ast ) {
 		}
 		return acc;
 	}, []);
-	out = out.concat(fuseTemp(temp, false));
+	out = out.concat(fuseTemp(temp, (inIf ? true : false)));
 	temp = [];
 	return out;
 }
