@@ -10,14 +10,27 @@ module.exports = {
 		 * Increment/Decrement current cell by `body`.
 		 */
 		SFT (settings, ins, program) {
-			program.push("t[p]+=" + ins.body);
+			if (ins.body > 0) program.push("t[p]+=" + ins.body);
+			else if (ins.body < 0) program.push("t[p]-=" + Math.abs(ins.body));
+			else return;
 		},
 
 		/**
 		 * Increment/Decrement a relativly-specified cell by `body.value`.
 		 */
 		RELSFT (settings, ins, program) {
-			program.push("t[p+(" + ins.body.move + ")]+=" + ins.body.value);
+			var partOne = '';
+			var partTwo = '';
+
+			if (ins.body.move > 0) partOne = 't[p+' + ins.body.move + ']';
+			else if (ins.body.move < 0) partOne = 't[p-' + Math.abs(ins.body.move) + ']';
+			else partOne = 't[p]';
+
+			if (ins.body.value > 0) partTwo = "+=" + ins.body.value;
+			else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
+			else return;
+
+			program.push(partOne + partTwo);
 		},
 
 		/**
@@ -45,7 +58,9 @@ module.exports = {
 		 * Move the current cell left or right by `body`.
 		 */
 		MOV (settings, ins, program) {
-			program.push("p+=" + ins.body);
+			if (ins.body > 0) program.push("p+=" + ins.body);
+			else if (ins.body < 0) program.push("p-=" + Math.abs(ins.body));
+			else return;
 		},
 
 		/**
