@@ -3,28 +3,32 @@ var fuseTriggers = ['SFT'];
 
 function fuseTemp (temp, causeMove) {
 	if (temp.length > 0) {
-		let p = 0;
-		let rel = temp.reduce(( acc, ins ) => {
-			if (ins.is === 'MOV') {
-				p += ins.body;
-			} else if (ins.is === 'SFT') {
-				acc.push({
-					is: 'RELSFT',
-					body: {
-						value: ins.body,
-						move: p
-					}
+		if (temp.filter((ins) => ins.is === 'MOV').length > 0) {
+			let p = 0;
+			let rel = temp.reduce(( acc, ins ) => {
+				if (ins.is === 'MOV') {
+					p += ins.body;
+				} else if (ins.is === 'SFT') {
+					acc.push({
+						is: 'RELSFT',
+						body: {
+							value: ins.body,
+							move: p
+						}
+					})
+				}
+				return acc;
+			}, [])
+			if (causeMove && (p !== 0)) {
+				rel.push({
+					is: 'MOV',
+					body: p
 				})
 			}
-			return acc;
-		}, [])
-		if (causeMove && (p !== 0)) {
-			rel.push({
-				is: 'MOV',
-				body: p
-			})
+			return rel;
+		} else {
+			return temp;
 		}
-		return rel;
 	} else {
 		return [];
 	}
