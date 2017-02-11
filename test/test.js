@@ -1,9 +1,9 @@
-let prepare  = require('../system/prepare');
-let analyse  = require('../system/analyse');
-let optimise = require('../system/optimise');
-let convert  = require('../system/convert');
-let wrap     = require('../system/wrap');
-let index    = require('../index');
+let prepare  = require('../src/steps/prepare');
+let analyse  = require('../src/steps/analyse');
+let optimise = require('../src/steps/optimise');
+let convert  = require('../src/steps/convert');
+let wrap     = require('../src/steps/wrap');
+let index    = require('../dist/unfuck.js');
 
 let assert  = require('assert');
 
