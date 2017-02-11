@@ -1,12 +1,12 @@
-import prepare  from './steps/prepare'
-import analyse  from './steps/analyse'
-import optimise from './steps/optimise'
-import convert  from './steps/convert'
-import wrap     from './steps/wrap'
+var prepare  = require('./steps/prepare');
+var analyse  = require('./steps/analyse');
+var optimise = require('./steps/optimise');
+var convert  = require('./steps/convert');
+var wrap     = require('./steps/wrap');
 
 var initSettings = {
-  language: 'standard',
-  target: 'simple-es6',
+  language: "standard",
+  target: "simple-es6",
   type: Uint8Array,
   width: 10240,
   in: String,

@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -99,7 +99,7 @@ module.exports = convert;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var langStandard = __webpack_require__(9);
+var langStandard = __webpack_require__(8);
 
 function analyse(settings, program) {
   var ast = [];
@@ -387,38 +387,9 @@ webpackContext.id = 4;
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-module.exports = function (originalModule) {
-	if (!originalModule.webpackPolyfill) {
-		var module = Object.create(originalModule);
-		// module.parent = undefined by default
-		if (!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function get() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function get() {
-				return module.i;
-			}
-		});
-		Object.defineProperty(module, "exports", {
-			enumerable: true
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var optimisers = [__webpack_require__(10), __webpack_require__(13), __webpack_require__(14), __webpack_require__(11), __webpack_require__(12)];
+var optimisers = [__webpack_require__(9), __webpack_require__(12), __webpack_require__(13), __webpack_require__(10), __webpack_require__(11)];
 
 function optimise(settings, ast) {
   return optimisers.reduce(function (acc, optimiser) {
@@ -429,7 +400,7 @@ function optimise(settings, ast) {
 module.exports = optimise;
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports) {
 
 var valid = ['+', '-', '>', '<', '[', ']', '.', ','];
@@ -461,7 +432,7 @@ function prepare(settings, bf) {
 module.exports = prepare;
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 function wrap(settings, program) {
@@ -483,7 +454,7 @@ function wrap(settings, program) {
 module.exports = wrap;
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
@@ -569,7 +540,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports) {
 
 var collapsable = ['SFT', 'MOV'];
@@ -603,7 +574,7 @@ function collapse(settings, ast) {
 module.exports = collapse;
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -679,7 +650,7 @@ function fuse(settings, ast, inIf) {
 module.exports = fuse;
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports) {
 
 function checkForLeftPattern(ast) {
@@ -755,7 +726,7 @@ function multiplication(settings, ast) {
 module.exports = multiplication;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports) {
 
 var nullable = ['SFT', 'MOV'];
@@ -781,7 +752,7 @@ function nullify(settings, ast) {
 module.exports = nullify;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports) {
 
 function setZero(settings, ast) {
@@ -805,30 +776,18 @@ function setZero(settings, ast) {
 module.exports = setZero;
 
 /***/ }),
-/* 15 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* WEBPACK VAR INJECTION */(function(module) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__steps_prepare__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__steps_prepare___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__steps_prepare__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__steps_analyse__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__steps_analyse___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__steps_analyse__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__steps_optimise__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__steps_optimise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__steps_optimise__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__steps_convert__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__steps_convert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__steps_convert__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__steps_wrap__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__steps_wrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__steps_wrap__);
-
-
-
-
-
+var prepare = __webpack_require__(6);
+var analyse = __webpack_require__(1);
+var optimise = __webpack_require__(5);
+var convert = __webpack_require__(0);
+var wrap = __webpack_require__(7);
 
 var initSettings = {
-  language: 'standard',
-  target: 'simple-es6',
+  language: "standard",
+  target: "simple-es6",
   type: Uint8Array,
   width: 10240,
   in: String,
@@ -841,11 +800,11 @@ module.exports = {
     this.settings = Object.assign(this.settings, settings);
 
     this.compile = function (rawBf) {
-      var bf = __WEBPACK_IMPORTED_MODULE_0__steps_prepare___default()(this.settings, rawBf);
-      var ast = __WEBPACK_IMPORTED_MODULE_1__steps_analyse___default()(this.settings, bf);
-      ast = __WEBPACK_IMPORTED_MODULE_2__steps_optimise___default()(this.settings, ast);
-      var raw = __WEBPACK_IMPORTED_MODULE_3__steps_convert___default()(this.settings, ast);
-      var js = __WEBPACK_IMPORTED_MODULE_4__steps_wrap___default()(this.settings, raw);
+      var bf = prepare(this.settings, rawBf);
+      var ast = analyse(this.settings, bf);
+      ast = optimise(this.settings, ast);
+      var raw = convert(this.settings, ast);
+      var js = wrap(this.settings, raw);
 
       return {
         bf: bf, ast: ast, js: js
@@ -867,7 +826,6 @@ module.exports = {
     return this;
   }
 };
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(5)(module)))
 
 /***/ })
 /******/ ]);
