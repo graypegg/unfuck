@@ -2,10 +2,8 @@
  * -- Unfuck Compilation Target: `interactive-es6` --
  */
 
-var convert = require('../../steps/convert');
-
 module.exports = {
-  output: {
+  output (parent) { return {
     /**
      * Increment/Decrement current cell by `body`.
      */
@@ -84,33 +82,41 @@ module.exports = {
      * Skip entirly if current cell is 0.
      */
     IF (settings, ins, program) {
-      program.push("while(t[p]!=0){" + (convert(settings, ins.body).join(';')) + "}");
+      program.push("while(t[p]!=0){" + (parent(settings, ins.body).join(';')) + "}");
     }
-  },
+  } },
   context (settings) {
-    var header = '';
-    var footer = '';
+    var preHeader = '';
 
     switch (settings.in) {
       case String:
-        header += 'var i=(c)=>{let x=iFn(c); return (x ? x.charCodeAt(0) : 0)};';
+        preHeader += 'var i=(c)=>{let x=iFn(c); return (x ? x.charCodeAt(0) : 0)};';
         break;
       case Number:
-        header += 'var i=iFn;';
+        preHeader += 'var i=iFn;';
         break;
     }
 
     switch (settings.out) {
       case String:
-        header += 'var o=(c)=>oFn(String.fromCharCode(c));';
+        preHeader += 'var o=(c)=>oFn(String.fromCharCode(c));';
         break;
       case Number:
-        header += 'var o=oFn;';
+        preHeader += 'var o=oFn;';
         break;
     }
 
     var params = ['iFn', 'oFn'];
 
-    return { header, footer, params };
+    if (settings.type == Array) {
+      var type = "Array(" + settings.width + ").fill(0)"
+    } else {
+      var type = settings.type.name + "(" + settings.width + ")"
+    }
+
+    var header = "(function(" + params.join(',') + "){" + preHeader + "var t=new " + type + ";var p=0;";
+    var footer = "})";
+
+    return { header, footer, lineEnding: ';' };
   }
 }

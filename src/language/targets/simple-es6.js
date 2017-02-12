@@ -2,10 +2,8 @@
  * -- Unfuck Compilation Target: `simple-es6` --
  */
 
-var convert = require('../../steps/convert');
-
 module.exports = {
-  output: {
+  output (parent) { return {
     /**
      * Increment/Decrement current cell by `body`.
      */
@@ -84,35 +82,44 @@ module.exports = {
      * Skip entirly if current cell is 0.
      */
     IF (settings, ins, program) {
-      program.push("while(t[p]!=0){" + (convert(settings, ins.body).join(';')) + "}");
+      program.push("while(t[p]!=0){" + (parent(settings, ins.body).join(';')) + "}");
     }
-  },
+  } },
   context (settings) {
-    var header = '';
-    var footer = '';
+    var preHeader = '';
+    var preFooter = '';
 
     switch (settings.in) {
       case String:
-        header += 'var i=i.split(\'\').map(x=>x.charCodeAt())||[];';
+        preHeader += 'var i=i.split(\'\').map(x=>x.charCodeAt())||[];';
         break;
       case Number:
-        header += 'var i=i||[];';
+        preHeader += 'var i=i||[];';
         break;
     }
 
     switch (settings.out) {
       case String:
-        header += 'var o=[];';
-        footer += 'return o.map(x=>String.fromCharCode(x)).join(\'\');';
+        preHeader += 'var o=[];';
+        preFooter += 'return o.map(x=>String.fromCharCode(x)).join(\'\');';
         break;
       case Number:
-        header += 'var o=[];';
-         footer += "return o;";
+        preHeader += 'var o=[];';
+        preFooter += "return o;";
         break;
     }
 
     var params = ['i'];
 
-    return { header, footer, params };
+    if (settings.type == Array) {
+      var type = "Array(" + settings.width + ").fill(0)"
+    } else {
+      var type = settings.type.name + "(" + settings.width + ")"
+    }
+
+    var header = "(function(" + params.join(',') + "){" + preHeader + "var t=new " + type + ";var p=0;";
+    var footer = preFooter + "})";
+
+    return { header, footer, lineEnding: ';' };
   }
 }

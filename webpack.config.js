@@ -2,6 +2,9 @@ var path = require('path');
 
 module.exports = {
 	entry: './src/index.js',
+  externals: [
+      /^(uf\-target\-)/
+  ],
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'unfuck.js',

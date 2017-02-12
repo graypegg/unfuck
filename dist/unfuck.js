@@ -83,28 +83,6 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-function convert(settings, ast) {
-  var target = __webpack_require__(4)("./" + settings.target);
-  var program = [];
-
-  ast.forEach(function (ins) {
-    if (target.output[ins.is]) {
-      target.output[ins.is](settings, ins, program);
-    }
-  });
-
-  return program;
-}
-
-module.exports = convert;
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
 var langStandard = __webpack_require__(8);
 
 function analyse(settings, program) {
@@ -127,7 +105,7 @@ function analyse(settings, program) {
 module.exports = analyse;
 
 /***/ }),
-/* 2 */
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -137,118 +115,126 @@ module.exports = analyse;
  * -- Unfuck Compilation Target: `interactive-es6` --
  */
 
-var convert = __webpack_require__(0);
-
 module.exports = {
-  output: {
-    /**
-     * Increment/Decrement current cell by `body`.
-     */
-    SFT: function SFT(settings, ins, program) {
-      if (ins.body > 0) program.push("t[p]+=" + ins.body);else if (ins.body < 0) program.push("t[p]-=" + Math.abs(ins.body));else return;
-    },
+  output: function output(parent) {
+    return {
+      /**
+       * Increment/Decrement current cell by `body`.
+       */
+      SFT: function SFT(settings, ins, program) {
+        if (ins.body > 0) program.push("t[p]+=" + ins.body);else if (ins.body < 0) program.push("t[p]-=" + Math.abs(ins.body));else return;
+      },
 
 
-    /**
-     * Increment/Decrement a relativly-specified cell by `body.value`.
-     */
-    RELSFT: function RELSFT(settings, ins, program) {
-      var partOne = '';
-      var partTwo = '';
+      /**
+       * Increment/Decrement a relativly-specified cell by `body.value`.
+       */
+      RELSFT: function RELSFT(settings, ins, program) {
+        var partOne = '';
+        var partTwo = '';
 
-      if (ins.body.move > 0) partOne = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) partOne = 't[p-' + Math.abs(ins.body.move) + ']';else partOne = 't[p]';
+        if (ins.body.move > 0) partOne = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) partOne = 't[p-' + Math.abs(ins.body.move) + ']';else partOne = 't[p]';
 
-      if (ins.body.value > 0) partTwo = "+=" + ins.body.value;else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
+        if (ins.body.value > 0) partTwo = "+=" + ins.body.value;else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
 
-      program.push(partOne + partTwo);
-    },
-
-
-    /**
-     * Set current cell to `body`.
-     */
-    SET: function SET(settings, ins, program) {
-      program.push("t[p]=" + ins.body);
-    },
+        program.push(partOne + partTwo);
+      },
 
 
-    /**
-     * Multiply current cell by factors, and add to cells.
-     */
-    MUL: function MUL(settings, ins, program) {
-      ins.body.factors.forEach(function (factor) {
-        var part = '';
-
-        if (factor.move > 0) part = 't[p+' + factor.move + ']';else if (factor.move < 0) part = 't[p-' + Math.abs(factor.move) + ']';else part = 't[p]';
-
-        if (factor.factor === 1) program.push(part + '+=t[p]');else program.push(part + '+=t[p]*' + factor.factor);
-      });
-      program.push('t[p]=0');
-    },
+      /**
+       * Set current cell to `body`.
+       */
+      SET: function SET(settings, ins, program) {
+        program.push("t[p]=" + ins.body);
+      },
 
 
-    /**
-     * Use the output function to post current cell
-     */
-    OUT: function OUT(settings, ins, program) {
-      program.push("o(t[p])");
-    },
+      /**
+       * Multiply current cell by factors, and add to cells.
+       */
+      MUL: function MUL(settings, ins, program) {
+        ins.body.factors.forEach(function (factor) {
+          var part = '';
+
+          if (factor.move > 0) part = 't[p+' + factor.move + ']';else if (factor.move < 0) part = 't[p-' + Math.abs(factor.move) + ']';else part = 't[p]';
+
+          if (factor.factor === 1) program.push(part + '+=t[p]');else program.push(part + '+=t[p]*' + factor.factor);
+        });
+        program.push('t[p]=0');
+      },
 
 
-    /**
-     * Use the input function to query for input
-     */
-    INP: function INP(settings, ins, program) {
-      program.push("t[p]=i(t[p])");
-    },
+      /**
+       * Use the output function to post current cell
+       */
+      OUT: function OUT(settings, ins, program) {
+        program.push("o(t[p])");
+      },
 
 
-    /**
-     * Move the current cell left or right by `body`.
-     */
-    MOV: function MOV(settings, ins, program) {
-      if (ins.body > 0) program.push("p+=" + ins.body);else if (ins.body < 0) program.push("p-=" + Math.abs(ins.body));else return;
-    },
+      /**
+       * Use the input function to query for input
+       */
+      INP: function INP(settings, ins, program) {
+        program.push("t[p]=i(t[p])");
+      },
 
 
-    /**
-     * Conditionally loop `body` if current cell is not 0 and the begining of each loop.
-     * Skip entirly if current cell is 0.
-     */
-    IF: function IF(settings, ins, program) {
-      program.push("while(t[p]!=0){" + convert(settings, ins.body).join(';') + "}");
-    }
+      /**
+       * Move the current cell left or right by `body`.
+       */
+      MOV: function MOV(settings, ins, program) {
+        if (ins.body > 0) program.push("p+=" + ins.body);else if (ins.body < 0) program.push("p-=" + Math.abs(ins.body));else return;
+      },
+
+
+      /**
+       * Conditionally loop `body` if current cell is not 0 and the begining of each loop.
+       * Skip entirly if current cell is 0.
+       */
+      IF: function IF(settings, ins, program) {
+        program.push("while(t[p]!=0){" + parent(settings, ins.body).join(';') + "}");
+      }
+    };
   },
   context: function context(settings) {
-    var header = '';
-    var footer = '';
+    var preHeader = '';
 
     switch (settings.in) {
       case String:
-        header += 'var i=(c)=>{let x=iFn(c); return (x ? x.charCodeAt(0) : 0)};';
+        preHeader += 'var i=(c)=>{let x=iFn(c); return (x ? x.charCodeAt(0) : 0)};';
         break;
       case Number:
-        header += 'var i=iFn;';
+        preHeader += 'var i=iFn;';
         break;
     }
 
     switch (settings.out) {
       case String:
-        header += 'var o=(c)=>oFn(String.fromCharCode(c));';
+        preHeader += 'var o=(c)=>oFn(String.fromCharCode(c));';
         break;
       case Number:
-        header += 'var o=oFn;';
+        preHeader += 'var o=oFn;';
         break;
     }
 
     var params = ['iFn', 'oFn'];
 
-    return { header: header, footer: footer, params: params };
+    if (settings.type == Array) {
+      var type = "Array(" + settings.width + ").fill(0)";
+    } else {
+      var type = settings.type.name + "(" + settings.width + ")";
+    }
+
+    var header = "(function(" + params.join(',') + "){" + preHeader + "var t=new " + type + ";var p=0;";
+    var footer = "})";
+
+    return { header: header, footer: footer, lineEnding: ';' };
   }
 };
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -258,127 +244,136 @@ module.exports = {
  * -- Unfuck Compilation Target: `simple-es6` --
  */
 
-var convert = __webpack_require__(0);
-
 module.exports = {
-  output: {
-    /**
-     * Increment/Decrement current cell by `body`.
-     */
-    SFT: function SFT(settings, ins, program) {
-      if (ins.body > 0) program.push("t[p]+=" + ins.body);else if (ins.body < 0) program.push("t[p]-=" + Math.abs(ins.body));else return;
-    },
+  output: function output(parent) {
+    return {
+      /**
+       * Increment/Decrement current cell by `body`.
+       */
+      SFT: function SFT(settings, ins, program) {
+        if (ins.body > 0) program.push("t[p]+=" + ins.body);else if (ins.body < 0) program.push("t[p]-=" + Math.abs(ins.body));else return;
+      },
 
 
-    /**
-     * Increment/Decrement a relativly-specified cell by `body.value`.
-     */
-    RELSFT: function RELSFT(settings, ins, program) {
-      var partOne = '';
-      var partTwo = '';
+      /**
+       * Increment/Decrement a relativly-specified cell by `body.value`.
+       */
+      RELSFT: function RELSFT(settings, ins, program) {
+        var partOne = '';
+        var partTwo = '';
 
-      if (ins.body.move > 0) partOne = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) partOne = 't[p-' + Math.abs(ins.body.move) + ']';else partOne = 't[p]';
+        if (ins.body.move > 0) partOne = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) partOne = 't[p-' + Math.abs(ins.body.move) + ']';else partOne = 't[p]';
 
-      if (ins.body.value > 0) partTwo = "+=" + ins.body.value;else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
+        if (ins.body.value > 0) partTwo = "+=" + ins.body.value;else if (ins.body.value < 0) partTwo = "-=" + Math.abs(ins.body.value);
 
-      program.push(partOne + partTwo);
-    },
-
-
-    /**
-     * Set current cell to `body`.
-     */
-    SET: function SET(settings, ins, program) {
-      program.push("t[p]=" + ins.body);
-    },
+        program.push(partOne + partTwo);
+      },
 
 
-    /**
-     * Multiply current cell by factors, and add to cells.
-     */
-    MUL: function MUL(settings, ins, program) {
-      ins.body.factors.forEach(function (factor) {
-        var part = '';
-
-        if (factor.move > 0) part = 't[p+' + factor.move + ']';else if (factor.move < 0) part = 't[p-' + Math.abs(factor.move) + ']';else part = 't[p]';
-
-        if (factor.factor === 1) program.push(part + '+=t[p]');else program.push(part + '+=t[p]*' + factor.factor);
-      });
-      program.push('t[p]=0');
-    },
+      /**
+       * Set current cell to `body`.
+       */
+      SET: function SET(settings, ins, program) {
+        program.push("t[p]=" + ins.body);
+      },
 
 
-    /**
-     * Output current cell to output array.
-     */
-    OUT: function OUT(settings, ins, program) {
-      program.push("o.push(t[p])");
-    },
+      /**
+       * Multiply current cell by factors, and add to cells.
+       */
+      MUL: function MUL(settings, ins, program) {
+        ins.body.factors.forEach(function (factor) {
+          var part = '';
+
+          if (factor.move > 0) part = 't[p+' + factor.move + ']';else if (factor.move < 0) part = 't[p-' + Math.abs(factor.move) + ']';else part = 't[p]';
+
+          if (factor.factor === 1) program.push(part + '+=t[p]');else program.push(part + '+=t[p]*' + factor.factor);
+        });
+        program.push('t[p]=0');
+      },
 
 
-    /**
-     * Pop top value off input array and set to current cell.
-     */
-    INP: function INP(settings, ins, program) {
-      program.push("t[p]=(i.length<1?0:i.shift())");
-    },
+      /**
+       * Output current cell to output array.
+       */
+      OUT: function OUT(settings, ins, program) {
+        program.push("o.push(t[p])");
+      },
 
 
-    /**
-     * Move the current cell left or right by `body`.
-     */
-    MOV: function MOV(settings, ins, program) {
-      if (ins.body > 0) program.push("p+=" + ins.body);else if (ins.body < 0) program.push("p-=" + Math.abs(ins.body));else return;
-    },
+      /**
+       * Pop top value off input array and set to current cell.
+       */
+      INP: function INP(settings, ins, program) {
+        program.push("t[p]=(i.length<1?0:i.shift())");
+      },
 
 
-    /**
-     * Conditionally loop `body` if current cell is not 0 and the begining of each loop.
-     * Skip entirly if current cell is 0.
-     */
-    IF: function IF(settings, ins, program) {
-      program.push("while(t[p]!=0){" + convert(settings, ins.body).join(';') + "}");
-    }
+      /**
+       * Move the current cell left or right by `body`.
+       */
+      MOV: function MOV(settings, ins, program) {
+        if (ins.body > 0) program.push("p+=" + ins.body);else if (ins.body < 0) program.push("p-=" + Math.abs(ins.body));else return;
+      },
+
+
+      /**
+       * Conditionally loop `body` if current cell is not 0 and the begining of each loop.
+       * Skip entirly if current cell is 0.
+       */
+      IF: function IF(settings, ins, program) {
+        program.push("while(t[p]!=0){" + parent(settings, ins.body).join(';') + "}");
+      }
+    };
   },
   context: function context(settings) {
-    var header = '';
-    var footer = '';
+    var preHeader = '';
+    var preFooter = '';
 
     switch (settings.in) {
       case String:
-        header += 'var i=i.split(\'\').map(x=>x.charCodeAt())||[];';
+        preHeader += 'var i=i.split(\'\').map(x=>x.charCodeAt())||[];';
         break;
       case Number:
-        header += 'var i=i||[];';
+        preHeader += 'var i=i||[];';
         break;
     }
 
     switch (settings.out) {
       case String:
-        header += 'var o=[];';
-        footer += 'return o.map(x=>String.fromCharCode(x)).join(\'\');';
+        preHeader += 'var o=[];';
+        preFooter += 'return o.map(x=>String.fromCharCode(x)).join(\'\');';
         break;
       case Number:
-        header += 'var o=[];';
-        footer += "return o;";
+        preHeader += 'var o=[];';
+        preFooter += "return o;";
         break;
     }
 
     var params = ['i'];
 
-    return { header: header, footer: footer, params: params };
+    if (settings.type == Array) {
+      var type = "Array(" + settings.width + ").fill(0)";
+    } else {
+      var type = settings.type.name + "(" + settings.width + ")";
+    }
+
+    var header = "(function(" + params.join(',') + "){" + preHeader + "var t=new " + type + ";var p=0;";
+    var footer = preFooter + "})";
+
+    return { header: header, footer: footer, lineEnding: ';' };
   }
 };
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./interactive-es6": 2,
-	"./interactive-es6.js": 2,
-	"./simple-es6": 3,
-	"./simple-es6.js": 3
+	"./interactive-es6": 1,
+	"./interactive-es6.js": 1,
+	"./simple-es6": 2,
+	"./simple-es6.js": 2
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -394,8 +389,35 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 4;
+webpackContext.id = 3;
 
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function convert(settings, ast) {
+  if (typeof settings.target === 'string') {
+    var target = __webpack_require__(3)("./" + settings.target);
+  } else {
+    var target = settings.target;
+  }
+
+  var output = target.output(convert);
+  var program = [];
+
+  ast.forEach(function (ins) {
+    var insMatch = output[ins.is];
+    if (insMatch) insMatch(settings, ins, program);
+  });
+
+  return program;
+}
+
+module.exports = convert;
 
 /***/ }),
 /* 5 */
@@ -457,19 +479,14 @@ module.exports = prepare;
 
 
 function wrap(settings, program) {
-
-  if (settings.type == Array) {
-    var type = "Array(" + settings.width + ").fill(0)";
+  if (typeof settings.target === 'string') {
+    var target = __webpack_require__(3)("./" + settings.target);
   } else {
-    var type = settings.type.name + "(" + settings.width + ")";
+    var target = settings.target;
   }
 
-  var target = __webpack_require__(4)("./" + settings.target);
   var context = target.context(settings);
-
-  var header = "(function(" + context.params.join(',') + "){" + context.header + "var t=new " + type + ";var p=0;";
-  var footer = context.footer + "})";
-  return header + program.join(';') + ';' + footer;
+  return context.header + program.join(context.lineEnding || '') + (context.lineEnding || '') + context.footer;
 }
 
 module.exports = wrap;
@@ -536,7 +553,7 @@ module.exports = {
 
   // Loop/If Operator //
   '[': function _(settings, i, program, ast) {
-    var analyse = __webpack_require__(1);
+    var analyse = __webpack_require__(0);
 
     var init = "";
     var open = 1;
@@ -822,9 +839,9 @@ module.exports = setZero;
 
 
 var prepare = __webpack_require__(6);
-var analyse = __webpack_require__(1);
+var analyse = __webpack_require__(0);
 var optimise = __webpack_require__(5);
-var convert = __webpack_require__(0);
+var convert = __webpack_require__(4);
 var wrap = __webpack_require__(7);
 
 var initSettings = {
