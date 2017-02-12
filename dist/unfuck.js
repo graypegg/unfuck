@@ -80,6 +80,9 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 function convert(settings, ast) {
   var target = __webpack_require__(4)("./" + settings.target);
   var program = [];
@@ -98,6 +101,9 @@ module.exports = convert;
 /***/ }),
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var langStandard = __webpack_require__(8);
 
@@ -123,6 +129,9 @@ module.exports = analyse;
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /**
  * -- Unfuck Compilation Target: `interactive-es6` --
@@ -241,6 +250,9 @@ module.exports = {
 /***/ }),
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 /**
  * -- Unfuck Compilation Target: `simple-es6` --
@@ -389,6 +401,9 @@ webpackContext.id = 4;
 /* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 var optimisers = [__webpack_require__(9), __webpack_require__(12), __webpack_require__(13), __webpack_require__(10), __webpack_require__(11)];
 
 function optimise(settings, ast) {
@@ -401,7 +416,10 @@ module.exports = optimise;
 
 /***/ }),
 /* 6 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var valid = ['+', '-', '>', '<', '[', ']', '.', ','];
 
@@ -435,6 +453,9 @@ module.exports = prepare;
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+
 function wrap(settings, program) {
 
   if (settings.type == Array) {
@@ -456,6 +477,9 @@ module.exports = wrap;
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 module.exports = {
   // Addition Operator //
@@ -541,7 +565,10 @@ module.exports = {
 
 /***/ }),
 /* 9 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var collapsable = ['SFT', 'MOV'];
 
@@ -575,7 +602,10 @@ module.exports = collapse;
 
 /***/ }),
 /* 10 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -651,7 +681,10 @@ module.exports = fuse;
 
 /***/ }),
 /* 11 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function checkForLeftPattern(ast) {
   var first = ast[0].is === 'RELSFT';
@@ -727,7 +760,10 @@ module.exports = multiplication;
 
 /***/ }),
 /* 12 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var nullable = ['SFT', 'MOV'];
 
@@ -753,7 +789,10 @@ module.exports = nullify;
 
 /***/ }),
 /* 13 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 function setZero(settings, ast) {
   return ast.reduce(function (acc, ins) {
@@ -778,6 +817,9 @@ module.exports = setZero;
 /***/ }),
 /* 14 */
 /***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 
 var prepare = __webpack_require__(6);
 var analyse = __webpack_require__(1);
