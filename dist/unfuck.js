@@ -863,15 +863,15 @@ module.exports = {
       var ast = analyse(this.settings, bf);
       ast = optimise(this.settings, ast);
       var raw = convert(this.settings, ast);
-      var js = wrap(this.settings, raw);
+      var out = wrap(this.settings, raw);
 
       return {
-        bf: bf, ast: ast, js: js
+        bf: bf, ast: ast, out: out
       };
     };
 
     this.use = function (bf) {
-      return eval(this.compile(bf).js);
+      return eval(this.compile(bf).out);
     };
 
     this.run = function (bf) {
