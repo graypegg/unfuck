@@ -19,6 +19,68 @@ describe('Source Prepping', function() {
       assert.equal(prepare({}, '[test.example]++--'), '++--');
     });
   });
+
+  describe('Output Source Wrapping', function() {
+    describe('Simple ES6', function() {
+      describe('Number -> Number', function() {
+        it('should return a JS header & footer that take a Number and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "simple-es6",type: Uint8Array,width: 10240,in: Number,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){var i=i||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;return o;})');
+        });
+      });
+
+      describe('Number -> String', function() {
+        it('should return a JS header & footer that take a Number and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "simple-es6",type: Uint8Array,width: 10240,in: String,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){var i=i.split(\'\').map(x=>x.charCodeAt())||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;return o;})');
+        });
+      });
+
+      describe('String -> Number', function() {
+        it('should return a JS header & footer that take a String and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "simple-es6",type: Uint8Array,width: 10240,in: Number,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){var i=i||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;return o.map(x=>String.fromCharCode(x)).join(\'\');})');
+        });
+      });
+
+      describe('String -> String', function() {
+        it('should return a JS header & footer that take a String and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "simple-es6",type: Uint8Array,width: 10240,in: String,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){var i=i.split(\'\').map(x=>x.charCodeAt())||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;return o.map(x=>String.fromCharCode(x)).join(\'\');})');
+        });
+      });
+    });
+
+    describe('Interactive ES6', function() {
+      describe('Number -> Number', function() {
+        it('should return a JS header & footer that take a Number and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "interactive-es6",type: Uint8Array,width: 10240,in: Number,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(iFn,oFn){var i=iFn;var o=oFn;var t=new Uint8Array(10240);var p=0;CONTENT;HERE;})');
+        });
+      });
+
+      describe('Number -> String', function() {
+        it('should return a JS header & footer that take a Number and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "interactive-es6",type: Uint8Array,width: 10240,in: String,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(iFn,oFn){var i=(c)=>(iFn()).charCodeAt(0);var o=oFn;var t=new Uint8Array(10240);var p=0;CONTENT;HERE;})');
+        });
+      });
+
+      describe('String -> Number', function() {
+        it('should return a JS header & footer that take a String and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "interactive-es6",type: Uint8Array,width: 10240,in: Number,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(iFn,oFn){var i=iFn;var o=(c)=>oFn(String.fromCharCode(c));var t=new Uint8Array(10240);var p=0;CONTENT;HERE;})');
+        });
+      });
+
+      describe('String -> String', function() {
+        it('should return a JS header & footer that take a String and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "interactive-es6",type: Uint8Array,width: 10240,in: String,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(iFn,oFn){var i=(c)=>(iFn()).charCodeAt(0);var o=(c)=>oFn(String.fromCharCode(c));var t=new Uint8Array(10240);var p=0;CONTENT;HERE;})');
+        });
+      });
+    });
+  });
 });
 
 describe('Basic Compilation', function() {
