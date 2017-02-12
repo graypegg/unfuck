@@ -225,7 +225,7 @@ module.exports = {
 
     switch (settings.in) {
       case String:
-        header += 'var i=(c)=>(iFn()).charCodeAt(0);';
+        header += 'var i=(c)=>{let x=iFn(c); return (x ? x.charCodeAt(0) : 0)};';
         break;
       case Number:
         header += 'var i=iFn;';
