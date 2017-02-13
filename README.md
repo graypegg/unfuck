@@ -40,7 +40,7 @@ The length of the 'tape'. Values at cells beyond this number, or less than 0, re
 **Takes:** A type constructor (`String` or `Number`)<br>
 **Default:** `String`<br>
 The type of data the resulting javascript function will take as input. (The target option determines the source of input.)
- 
+
 * If it's set to `String`, the function will insert each [charCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/charCodeAt) sequentially when `,` is used.
 * If it's set to `Number`, the function will insert the number supplied as input sequentially when `,` is used.
 
@@ -48,7 +48,7 @@ The type of data the resulting javascript function will take as input. (The targ
 **Takes:** A type constructor (`String` or `Number`)<br>
 **Default:** `String`<br>
 The type of data the resulting javascript function will return or include in it's output callback. (The target option determines the mode of output.)
- 
+
 * If it's set to `String`, the function will convert the number on the tape to a character via [fromCharCode](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/fromCharCode)
 * If it's set to `Number`, the function will return the numerical value of the cell on the tape.
 
@@ -66,7 +66,7 @@ Unfuck comes with a couple different compilation targets which affect how the ou
 
 `compiler.compile( Brainfuck String )`
 
-Returns an object containing the sanitized brainfuck code, a copy of the Abstract Syntax Tree, and the outputted Javascript function in a string. See example below for example output of this function.
+Returns an object containing the sanitized brainfuck code, a copy of the Abstract Syntax Tree, and the outputted compiled code in a string. See example below for example output of this function.
 
 ---
 
@@ -100,35 +100,38 @@ Which outputs the following:
 
 ```javascript
 {
-	"bf": "++++++[>++++++++++<-]>+++++.",
-	"ast": [
-		{
-			"is": "INC",
-			"body": 6
-		},
-		{
-			"is": "SFT",
-			"body": 1
-		},
-		{
-			"is": "INC",
-			"body": 10
-		},
-		{
-			"is": "MUL"
-		},
-		{
-			"is": "SFT",
-			"body": 1
-		},
-		{
-			"is": "INC",
-			"body": 5
-		},
-		{
-			"is": "OUT"
-		}
-	],
-	"js": "(function(i){o=[];i=i||[];t=new Uint16Array(9999);p=0;t[p]+=6;p+=1;t[p]+=10;t[p]=t[p]*t[p-1];p+=-1;p+=1;t[p]+=5;o.push(t[p]);return o.map(x=>String.fromCharCode(x)).join('')})"
+    "bf": "++++++[>++++++++++<-]>+++++.",
+    "ast": [
+        {
+            "is": "SFT",
+            "body": 6
+        },
+        {
+            "is": "MUL",
+            "body": {
+                "factors": [
+                    {
+                        "move": 1,
+                        "factor": 10
+                    }
+                ]
+            }
+        },
+        {
+            "is": "RELSFT",
+            "body": {
+                "value": 5,
+                "move": 1
+            }
+        },
+        {
+            "is": "MOV",
+            "body": 1
+        },
+        {
+            "is": "OUT"
+        }
+    ],
+    "out": "(function(i){var i=i.split('').map(x=>x.charCodeAt())||[];var o=[];var t=new Uint8Array(30000);var p=0;t[p]+=6;t[p+1]+=t[p]*10;t[p]=0;t[p+1]+=5;p+=1;o.push(t[p]);return o.map(x=>String.fromCharCode(x)).join('');})"
 }
 ```
