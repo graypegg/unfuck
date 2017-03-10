@@ -1,5 +1,5 @@
-var fusible = ['SFT', 'MOV'];
-var fuseTriggers = ['SFT', 'MOV'];
+var fusible = ['SFT', 'MOV', 'SET'];
+var fuseTriggers = ['SFT', 'MOV', 'SET'];
 
 function fuseTemp (temp, causeMove) {
   if (temp.length > 0) {
@@ -8,9 +8,9 @@ function fuseTemp (temp, causeMove) {
       let rel = temp.reduce(( acc, ins ) => {
         if (ins.is === 'MOV') {
           p += ins.body;
-        } else if (ins.is === 'SFT') {
+        } else if (fusible.indexOf(ins.is) !== -1) {
           acc.push({
-            is: 'RELSFT',
+            is: 'REL' + ins.is,
             body: {
               value: ins.body,
               move: p

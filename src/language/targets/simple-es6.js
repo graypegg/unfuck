@@ -38,6 +38,19 @@ module.exports = {
     },
 
     /**
+     * Set a relativly-specified cell to `body.value`.
+     */
+    RELSET (settings, ins, program) {
+      var part = '';
+
+      if (ins.body.move > 0) part = 't[p+' + ins.body.move + ']';
+      else if (ins.body.move < 0) part = 't[p-' + Math.abs(ins.body.move) + ']';
+      else part = 't[p]';
+
+      program.push(part + "=" + ins.body.value);
+    },
+
+    /**
      * Multiply current cell by factors, and add to cells.
      */
     MUL (settings, ins, program) {

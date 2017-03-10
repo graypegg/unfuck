@@ -150,6 +150,18 @@ module.exports = {
 
 
       /**
+       * Set a relativly-specified cell to `body.value`.
+       */
+      RELSET: function RELSET(settings, ins, program) {
+        var part = '';
+
+        if (ins.body.move > 0) part = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) part = 't[p-' + Math.abs(ins.body.move) + ']';else part = 't[p]';
+
+        program.push(part + "=" + ins.body.value);
+      },
+
+
+      /**
        * Multiply current cell by factors, and add to cells.
        */
       MUL: function MUL(settings, ins, program) {
@@ -275,6 +287,18 @@ module.exports = {
        */
       SET: function SET(settings, ins, program) {
         program.push("t[p]=" + ins.body);
+      },
+
+
+      /**
+       * Set a relativly-specified cell to `body.value`.
+       */
+      RELSET: function RELSET(settings, ins, program) {
+        var part = '';
+
+        if (ins.body.move > 0) part = 't[p+' + ins.body.move + ']';else if (ins.body.move < 0) part = 't[p-' + Math.abs(ins.body.move) + ']';else part = 't[p]';
+
+        program.push(part + "=" + ins.body.value);
       },
 
 
@@ -626,8 +650,8 @@ module.exports = collapse;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var fusible = ['SFT', 'MOV'];
-var fuseTriggers = ['SFT', 'MOV'];
+var fusible = ['SFT', 'MOV', 'SET'];
+var fuseTriggers = ['SFT', 'MOV', 'SET'];
 
 function fuseTemp(temp, causeMove) {
   if (temp.length > 0) {
@@ -639,9 +663,9 @@ function fuseTemp(temp, causeMove) {
         var rel = temp.reduce(function (acc, ins) {
           if (ins.is === 'MOV') {
             p += ins.body;
-          } else if (ins.is === 'SFT') {
+          } else if (fusible.indexOf(ins.is) !== -1) {
             acc.push({
-              is: 'RELSFT',
+              is: 'REL' + ins.is,
               body: {
                 value: ins.body,
                 move: p
