@@ -21,7 +21,7 @@ module.exports = {
     this.compile = function ( rawBf ) {
       var bf  = prepare(this.settings, rawBf);
       var ast = analyse(this.settings, bf);
-        ast = optimise(this.settings, ast);
+          ast = optimise(this.settings, ast);
       var raw = convert(this.settings, ast);
       var out  = wrap(this.settings, raw);
 

@@ -53,7 +53,7 @@ module.exports = {
 
   // Loop/If Operator //
   '[': function (settings, i, program, ast) {
-  var analyse  = require('../../steps/analyse');
+    var analyse  = require('../../steps/analyse');
 
     let init = "";
     let open = 1;
