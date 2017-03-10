@@ -820,7 +820,10 @@ function setZero(settings, ast) {
           body: 0
         });
       } else {
-        acc.push(ins);
+        acc.push({
+          is: 'IF',
+          body: setZero(settings, ins.body)
+        });
       }
     } else {
       acc.push(ins);
