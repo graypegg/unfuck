@@ -81,7 +81,30 @@ Returns a real Javascript function which takes input as it's only parameter and 
 Executes the brainfuck function with input. Input should be pre-formatted to the compilers specs. (I.E. Number => [Int], String => "String")
 
 
-## Example
+## Examples
+
+### Basic Use
+If you just want to test out the compiler, you can run a simple hello world program using this:
+
+```javascript
+// Import Unfuck module.
+var uf = require('unfuck');
+
+// Create a compiler using the default configuration.
+var compiler = uf.compiler();
+
+// Output 'Hello World!' to the console. 
+console.log(
+	compiler.run( // Runs the compiled JS function right after compiling.
+		'++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.', // The brainfuck program itself.
+		'' // This is for program input, which the hello world program doesn't utilize
+	)
+);
+```
+
+### Compilation output with Abstract Syntax Tree
+Using the `.compile()` method lets you access a copy of the generated AST, for whatever reason you need it for.
+
 
 ```javascript
 var uf = require('unfuck');
@@ -91,9 +114,9 @@ var compiler = uf.compiler({
 	in: Number,
 	out: String,
 	width: 9999
-})
+});
 
-console.log( compiler.compile('++++++[>++++++++++<-]>+++++.') )
+console.log( compiler.compile('++++++[>++++++++++<-]>+++++.') );
 ```
 
 Which outputs the following:
