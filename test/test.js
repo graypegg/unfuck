@@ -150,9 +150,9 @@ describe('Optimisation', function() {
   });
 
   describe('Fusing', function() {
-    it('should return a AST with THREE RELSFT instructions, and ends with a MOV of the sum of steps taken', function() {
-      var ast = [{"is":"SFT","body":1},{"is":"SFT","body":1},{"is":"MOV","body":1},{"is":"MOV","body":1},{"is":"SFT","body":-1},{"is":"SFT","body":-1},{"is":"MOV","body":-1},{"is":"SFT","body":1},{"is":"OUT"}];
-      assert.deepEqual(optimise({}, ast), [{"is":"RELSFT","body":{"value":2,"move":0}},{"is":"RELSFT","body":{"value":-2,"move":2}},{"is":"RELSFT","body":{"value":1,"move":1}},{"is":"MOV","body":1},{"is":"OUT"}]);
+    it('should return a AST with FOUR REL* instructions, and ends with a MOV of the sum of steps taken', function() {
+      var ast = [{"is":"SFT","body":1},{"is":"SFT","body":1},{"is":"MOV","body":1},{"is":"MOV","body":1},{"is":"SET","body":0},{"is":"SFT","body":-1},{"is":"MOV","body":-1},{"is":"SFT","body":1},{"is":"OUT"}];
+      assert.deepEqual(optimise({}, ast), [{"is":"RELSFT","body":{"value":2,"move":0}},{"is":"RELSET","body":{"value":0,"move":2}},{"is":"RELSFT","body":{"value":-1,"move":2}},{"is":"RELSFT","body":{"value":1,"move":1}},{"is":"MOV","body":1},{"is":"OUT"}]);
     });
   });
 
@@ -245,6 +245,13 @@ describe('AST Conversion', function() {
     it('should return an array containing a JS program that sets the current cell to 5', function() {
       var ast = [{"is":"SET","body":5}];
       assert.deepEqual(convert({ target: 'simple-es6' }, ast), ["t[p]=5"]);
+    });
+  });
+
+  describe('RELSET', function() {
+    it('should return an array containing a JS program that sets the next cell to 5', function() {
+      var ast = [{"is":"RELSET","body":{"value":5,"move":1}}];
+      assert.deepEqual(convert({ target: 'simple-es6' }, ast), ["t[p+1]=5"]);
     });
   });
 
@@ -407,7 +414,7 @@ describe('Complex Programs', function() {
   });
 
   describe('ASCII Tree', function() {
-    it('should return a ASCII evergreen tree', function() {
+    it('should return an ASCII evergreen tree', function() {
       let bf  = `
         [xmastree.b -- print Christmas tree
         (c) 2016 Daniel B. Cristofani
@@ -425,6 +432,26 @@ describe('Complex Programs', function() {
      *
 `
       assert.deepEqual(c.run(bf, '5'), tree);
+    });
+  });
+
+  describe('Mandlebrot Set', function() {
+    this.timeout(8000);
+    it('should return an ASCII Mandlebrot set', function( done ) {
+      let bf   = require('./mandlebrot.b.js').bf;
+      let c    = uf.compiler({target: 'interactive-es6', in: Number, width: 30000});
+      let goal = require('./mandlebrot.out.js').out;
+
+      let out = '';
+      let i = 0;
+      let inpFn = (x) => 0;
+      let outFn = (x) => {
+        i++;
+        if (i < 6239) out += x;
+        else done(assert.equal(out + x, goal))
+      };
+
+      c.run(bf, inpFn, outFn)
     });
   });
 });
