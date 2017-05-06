@@ -686,6 +686,10 @@ module.exports = {
   '[': function _(settings, i, program, ast) {
     var analyse = __webpack_require__(0);
 
+    if (program[i + 1] === ']') {
+      throw new BrainfuckError(program, { start: i, end: i + 2 }, 'Empty loops run forever!');
+    }
+
     var init = "";
     var open = 1;
     var prev = 0;

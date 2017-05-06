@@ -55,6 +55,10 @@ module.exports = {
   '[': function (settings, i, program, ast) {
     var analyse  = require('../../steps/analyse');
 
+    if (program[i+1] === ']') {
+      throw new BrainfuckError(program, {start: i, end: i + 2}, 'Empty loops run forever!')
+    }
+
     let init = "";
     let open = 1;
     let prev = 0;
