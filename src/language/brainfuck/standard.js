@@ -60,7 +60,7 @@ module.exports = {
     let prev = 0;
 
     while (open > 0) {
-      for (let j=(i+1); program[j]!=']'; j++) {
+      for (let j = (i+1); program[j] != ']'; j++) {
         if (program[j] == "[") open++;
         init += program[j];
       }

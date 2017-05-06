@@ -4,13 +4,13 @@ var valid = [
 
 function prepare ( settings, bf ) {
   var program = bf.split('').filter(x => valid.indexOf(x) > -1).join('');
-  if (program[0] == "[") {
+  if (program[0] === "[") {
     var i = 0;
     var length = 0;
     var prev = 0;
     var open = 1;
     while (open > 0) {
-      for (let j=(i+1); program[j]!=']'; j++) {
+      for (let j = (i + 1); program[j] !== ']' && j < program.length; j++) {
         if (program[j] == "[") open++;
         length++;
       }

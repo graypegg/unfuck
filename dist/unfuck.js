@@ -473,13 +473,13 @@ function prepare(settings, bf) {
   var program = bf.split('').filter(function (x) {
     return valid.indexOf(x) > -1;
   }).join('');
-  if (program[0] == "[") {
+  if (program[0] === "[") {
     var i = 0;
     var length = 0;
     var prev = 0;
     var open = 1;
     while (open > 0) {
-      for (var j = i + 1; program[j] != ']'; j++) {
+      for (var j = i + 1; program[j] !== ']' && j < program.length; j++) {
         if (program[j] == "[") open++;
         length++;
       }
