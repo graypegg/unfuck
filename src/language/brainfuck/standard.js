@@ -64,7 +64,7 @@ module.exports = {
         if (program[j] == "[") open++;
         init += program[j];
         if (j >= program.length) {
-          throw new BrainfuckError(program, {start: (i-prev), end: (i-prev)+1}, 'Loop is never closed!')
+          throw new BrainfuckError(program, {start: (i - prev), end: (i - prev) + 1}, 'Loop is never closed!')
         }
       }
       i += (init.length - prev) + 1
@@ -80,5 +80,12 @@ module.exports = {
       body: analyse(settings, init)
     });
     return i;
+  },
+
+  // Only for dangling loops, all loop logic is handled in the '[' function above. //
+  ']': function (settings, i, program, ast) {
+    if (ast[ast.length - 1].is !== 'IF') {
+      throw new BrainfuckError(program, {start: i, end: i + 1}, 'Loop is never started!')
+    }
   }
 }
