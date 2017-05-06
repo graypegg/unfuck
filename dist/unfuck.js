@@ -488,7 +488,7 @@ function prepare(settings, bf) {
       length++;
     }
     if (length >= program.length) {
-      throw new BrainfuckError(bf, { start: 0, end: 1 }, 'Comment loop is never closed!');
+      throw new BrainfuckError(program, { start: 0, end: 1 }, 'Comment loop is never closed!');
     }
     program = program.slice(length + 1);
   }
@@ -554,9 +554,9 @@ var BrainfuckError = function BrainfuckError(program, section, message, type) {
   };
 
   var out = '\n\n' + heading(this.type) + ' ' + highlight(this.message) + '\n';
-  out += 'character: ' + this.section.start + '\n';
-  out += this.context.start;
-  out += '↳  ' + highlight(this.highlight);
+  out += 'character: ' + (this.section.start + 1) + '\n';
+  out += '↳  ' + this.context.start;
+  out += highlight(this.highlight);
   out += this.context.end + '\n';
 
   return {
@@ -627,7 +627,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(BrainfuckError) {
 
 module.exports = {
   // Addition Operator //
@@ -694,6 +694,9 @@ module.exports = {
       for (var j = i + 1; program[j] != ']'; j++) {
         if (program[j] == "[") open++;
         init += program[j];
+        if (j >= program.length) {
+          throw new BrainfuckError(program, { start: i, end: i + 1 }, 'Loop is never closed!');
+        }
       }
       i += init.length - prev + 1;
       prev = init.length - prev + 1 + prev;
@@ -710,6 +713,7 @@ module.exports = {
     return i;
   }
 };
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 12 */

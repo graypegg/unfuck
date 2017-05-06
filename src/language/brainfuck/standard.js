@@ -63,6 +63,9 @@ module.exports = {
       for (let j = (i+1); program[j] != ']'; j++) {
         if (program[j] == "[") open++;
         init += program[j];
+        if (j >= program.length) {
+          throw new BrainfuckError(program, {start: i, end: i+1}, 'Loop is never closed!')
+        }
       }
       i += (init.length - prev) + 1
       prev = ((init.length - prev) + 1) + prev

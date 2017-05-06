@@ -20,7 +20,7 @@ function prepare ( settings, bf ) {
       length++;
     }
     if (length >= program.length) {
-      throw new BrainfuckError(bf, {start: 0, end: 1}, 'Comment loop is never closed!')
+      throw new BrainfuckError(program, {start: 0, end: 1}, 'Comment loop is never closed!')
     }
     program = program.slice(length+1);
   }
