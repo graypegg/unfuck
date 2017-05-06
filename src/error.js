@@ -24,9 +24,9 @@ class BrainfuckError {
 
 
     let out = '\n\n' + heading(this.type) + ' ' + highlight(this.message) + '\n'
-    out += 'character: ' + this.section.start + '\n'
-    out += this.context.start
-    out += '↳  ' + highlight(this.highlight)
+    out += 'character: ' + (this.section.start + 1) + '\n'
+    out += '↳  ' + this.context.start
+    out += highlight(this.highlight)
     out += this.context.end + '\n'
 
     return {
