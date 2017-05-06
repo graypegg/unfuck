@@ -11,41 +11,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-
+/******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-
+/******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
 /******/ 			l: false,
 /******/ 			exports: {}
 /******/ 		};
-
+/******/
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-
+/******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
-
+/******/
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-
-
+/******/
+/******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-
+/******/
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-
+/******/
 /******/ 	// identity function for calling harmony imports with the correct context
 /******/ 	__webpack_require__.i = function(value) { return value; };
-
+/******/
 /******/ 	// define getter function for harmony exports
 /******/ 	__webpack_require__.d = function(exports, name, getter) {
 /******/ 		if(!__webpack_require__.o(exports, name)) {
@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 			});
 /******/ 		}
 /******/ 	};
-
+/******/
 /******/ 	// getDefaultExport function for compatibility with non-harmony modules
 /******/ 	__webpack_require__.n = function(module) {
 /******/ 		var getter = module && module.__esModule ?
@@ -65,15 +65,15 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 		__webpack_require__.d(getter, 'a', getter);
 /******/ 		return getter;
 /******/ 	};
-
+/******/
 /******/ 	// Object.prototype.hasOwnProperty.call
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-
+/******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-
+/******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 10);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -83,7 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var langStandard = __webpack_require__(8);
+var langStandard = __webpack_require__(11);
 
 function analyse(settings, program) {
   var ast = [];
@@ -404,7 +404,7 @@ function webpackContext(req) {
 };
 function webpackContextResolve(req) {
 	var id = map[req];
-	if(!(id + 1)) // check for number
+	if(!(id + 1)) // check for number or string
 		throw new Error("Cannot find module '" + req + "'.");
 	return id;
 };
@@ -414,7 +414,6 @@ webpackContext.keys = function webpackContextKeys() {
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
 webpackContext.id = 3;
-
 
 /***/ }),
 /* 4 */
@@ -450,7 +449,7 @@ module.exports = convert;
 "use strict";
 
 
-var optimisers = [__webpack_require__(9), __webpack_require__(12), __webpack_require__(13), __webpack_require__(10), __webpack_require__(11)];
+var optimisers = [__webpack_require__(12), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13), __webpack_require__(14)];
 
 function optimise(settings, ast) {
   return optimisers.reduce(function (acc, optimiser) {
@@ -465,7 +464,7 @@ module.exports = optimise;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(BrainfuckError) {
 
 var valid = ['+', '-', '>', '<', '[', ']', '.', ','];
 
@@ -488,12 +487,16 @@ function prepare(settings, bf) {
       open--;
       length++;
     }
+    if (length >= program.length) {
+      throw new BrainfuckError(bf, { start: 0, end: 1 }, 'Comment loop is never closed!');
+    }
     program = program.slice(length + 1);
   }
   return program;
 }
 
 module.exports = prepare;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 7 */
@@ -516,7 +519,111 @@ function wrap(settings, program) {
 module.exports = wrap;
 
 /***/ }),
-/* 8 */
+/* 8 */,
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var contextExtend = 15;
+
+function highlight(inp) {
+  return '\x1b[46m\x1b[30m ' + inp + ' \x1b[0m';
+}
+
+function heading(inp) {
+  return '\x1b[41m\x1b[37m ' + inp + ' \x1b[0m';
+}
+
+var BrainfuckError = function BrainfuckError(program, section, message, type) {
+  _classCallCheck(this, BrainfuckError);
+
+  var start = section.start - contextExtend < 0 ? 0 : section.start - contextExtend;
+  var end = section.start + contextExtend >= program.length ? program.length : section.start + contextExtend;
+
+  this.message = message;
+  this.section = section;
+  this.type = type || 'Syntax';
+  this.highlight = program.slice(section.start, section.end);
+  this.context = {
+    start: program.slice(start, section.start),
+    end: program.slice(section.end, end)
+  };
+
+  var out = '\n\n' + heading(this.type) + ' ' + highlight(this.message) + '\n';
+  out += 'character: ' + this.section.start + '\n';
+  out += this.context.start;
+  out += '↳  ' + highlight(this.highlight);
+  out += this.context.end + '\n';
+
+  return {
+    name: 'Unfuck Error',
+    message: out
+  };
+};
+
+module.exports = BrainfuckError;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var prepare = __webpack_require__(6);
+var analyse = __webpack_require__(0);
+var optimise = __webpack_require__(5);
+var convert = __webpack_require__(4);
+var wrap = __webpack_require__(7);
+
+var initSettings = {
+  language: "standard",
+  target: "simple-es6",
+  type: Uint8Array,
+  width: 10240,
+  in: String,
+  out: String
+};
+
+module.exports = {
+  compiler: function compiler(settings) {
+    this.settings = Object.assign({}, initSettings);
+    this.settings = Object.assign(this.settings, settings);
+
+    this.compile = function (rawBf) {
+      var bf = prepare(this.settings, rawBf);
+      var ast = analyse(this.settings, bf);
+      ast = optimise(this.settings, ast);
+      var raw = convert(this.settings, ast);
+      var out = wrap(this.settings, raw);
+
+      return {
+        bf: bf, ast: ast, out: out
+      };
+    };
+
+    this.use = function (bf) {
+      return eval(this.compile(bf).out);
+    };
+
+    this.run = function (bf) {
+      for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        params[_key - 1] = arguments[_key];
+      }
+
+      return this.use(bf).apply(undefined, params);
+    };
+
+    return this;
+  }
+};
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -605,7 +712,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 9 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -642,13 +749,11 @@ function collapse(settings, ast) {
 module.exports = collapse;
 
 /***/ }),
-/* 10 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var fusible = ['SFT', 'MOV', 'SET'];
 var fuseTriggers = ['SFT', 'MOV', 'SET'];
@@ -658,34 +763,28 @@ function fuseTemp(temp, causeMove) {
     if (temp.filter(function (ins) {
       return ins.is === 'MOV';
     }).length > 0) {
-      var _ret = function () {
-        var p = 0;
-        var rel = temp.reduce(function (acc, ins) {
-          if (ins.is === 'MOV') {
-            p += ins.body;
-          } else if (fusible.indexOf(ins.is) !== -1) {
-            acc.push({
-              is: 'REL' + ins.is,
-              body: {
-                value: ins.body,
-                move: p
-              }
-            });
-          }
-          return acc;
-        }, []);
-        if (causeMove && p !== 0) {
-          rel.push({
-            is: 'MOV',
-            body: p
+      var p = 0;
+      var rel = temp.reduce(function (acc, ins) {
+        if (ins.is === 'MOV') {
+          p += ins.body;
+        } else if (fusible.indexOf(ins.is) !== -1) {
+          acc.push({
+            is: 'REL' + ins.is,
+            body: {
+              value: ins.body,
+              move: p
+            }
           });
         }
-        return {
-          v: rel
-        };
-      }();
-
-      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+        return acc;
+      }, []);
+      if (causeMove && p !== 0) {
+        rel.push({
+          is: 'MOV',
+          body: p
+        });
+      }
+      return rel;
     } else {
       return temp;
     }
@@ -721,7 +820,7 @@ function fuse(settings, ast, inIf) {
 module.exports = fuse;
 
 /***/ }),
-/* 11 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -800,7 +899,7 @@ function multiplication(settings, ast) {
 module.exports = multiplication;
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -829,7 +928,7 @@ function nullify(settings, ast) {
 module.exports = nullify;
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -857,61 +956,6 @@ function setZero(settings, ast) {
 }
 
 module.exports = setZero;
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var prepare = __webpack_require__(6);
-var analyse = __webpack_require__(0);
-var optimise = __webpack_require__(5);
-var convert = __webpack_require__(4);
-var wrap = __webpack_require__(7);
-
-var initSettings = {
-  language: "standard",
-  target: "simple-es6",
-  type: Uint8Array,
-  width: 10240,
-  in: String,
-  out: String
-};
-
-module.exports = {
-  compiler: function compiler(settings) {
-    this.settings = Object.assign({}, initSettings);
-    this.settings = Object.assign(this.settings, settings);
-
-    this.compile = function (rawBf) {
-      var bf = prepare(this.settings, rawBf);
-      var ast = analyse(this.settings, bf);
-      ast = optimise(this.settings, ast);
-      var raw = convert(this.settings, ast);
-      var out = wrap(this.settings, raw);
-
-      return {
-        bf: bf, ast: ast, out: out
-      };
-    };
-
-    this.use = function (bf) {
-      return eval(this.compile(bf).out);
-    };
-
-    this.run = function (bf) {
-      for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-        params[_key - 1] = arguments[_key];
-      }
-
-      return this.use(bf).apply(undefined, params);
-    };
-
-    return this;
-  }
-};
 
 /***/ })
 /******/ ]);

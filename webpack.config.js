@@ -1,4 +1,5 @@
-var path = require('path');
+let webpack = require('webpack')
+let path = require('path')
 
 module.exports = {
 	entry: './src/index.js',
@@ -11,6 +12,11 @@ module.exports = {
 		library: 'unfuck',
 		libraryTarget: 'umd'
 	},
+  plugins: [
+    new webpack.ProvidePlugin({
+      BrainfuckError: path.resolve(__dirname, 'src/error.js')
+    })
+  ],
 	module: {
 		loaders: [
 			{
