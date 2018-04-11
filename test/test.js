@@ -436,7 +436,7 @@ describe('Complex Programs', function() {
   });
 
   describe('Mandlebrot Set', function() {
-    this.timeout(8000);
+    this.timeout(20000);
     it('should return an ASCII Mandlebrot set', function( done ) {
       let bf   = require('./mandlebrot.b.js').bf;
       let c    = uf.compiler({target: 'interactive-es6', in: Number, width: 30000});
