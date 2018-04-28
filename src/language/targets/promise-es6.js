@@ -100,7 +100,7 @@ module.exports = {
     }
   } },
   context (settings) {
-    var preHeader = 'this.i = i;return new Promise((r,c)=>{try{';
+    var preHeader = 'this.i=i;return new Promise((r,c)=>{try{';
     var preFooter = '';
     var postFooter = '}catch (e){c(e)}});';
 

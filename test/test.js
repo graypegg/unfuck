@@ -80,6 +80,36 @@ describe('Source Prepping', function() {
         });
       });
     });
+    
+    describe('Promise ES6', function() {
+      describe('Number -> Number', function() {
+        it('should return a JS header & footer that take a Number and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "promise-es6",type: Uint8Array,width: 10240,in: Number,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){this.i=i;return new Promise((r,c)=>{try{var i=this.i||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;r(o);}catch (e){c(e)}});})');
+        });
+      });
+
+      describe('String -> Number', function() {
+        it('should return a JS header & footer that take a Number and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "promise-es6",type: Uint8Array,width: 10240,in: String,out: Number};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){this.i=i;return new Promise((r,c)=>{try{var i=this.i.split(\'\').map(x=>x.charCodeAt())||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;r(o);}catch (e){c(e)}});})');
+        });
+      });
+
+      describe('Number -> String', function() {
+        it('should return a JS header & footer that take a String and return a Number, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "promise-es6",type: Uint8Array,width: 10240,in: Number,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){this.i=i;return new Promise((r,c)=>{try{var i=this.i||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;r(o.map(x=>String.fromCharCode(x)).join(\'\'));}catch (e){c(e)}});})');
+        });
+      });
+
+      describe('String -> String', function() {
+        it('should return a JS header & footer that take a String and return a String, with CONTENT HERE as the main function body', function() {
+          var settings = {language: "standard",target: "promise-es6",type: Uint8Array,width: 10240,in: String,out: String};
+          assert.equal(wrap(settings, ['CONTENT', 'HERE']), '(function(i){this.i=i;return new Promise((r,c)=>{try{var i=this.i.split(\'\').map(x=>x.charCodeAt())||[];var o=[];var t=new Uint8Array(10240);var p=0;CONTENT;HERE;r(o.map(x=>String.fromCharCode(x)).join(\'\'));}catch (e){c(e)}});})');
+        });
+      });
+    });
   });
 });
 
