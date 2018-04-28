@@ -109,7 +109,7 @@ module.exports = {
         preHeader += 'var i=this.i.split(\'\').map(x=>x.charCodeAt())||[];';
         break;
       case Number:
-        preHeader += 'var i=i||[];';
+        preHeader += 'var i=this.i||[];';
         break;
     }
 
