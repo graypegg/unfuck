@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 10);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -83,7 +83,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 
-var langStandard = __webpack_require__(11);
+var langStandard = __webpack_require__(10);
 
 function analyse(settings, program) {
   var ast = [];
@@ -106,6 +106,54 @@ module.exports = analyse;
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var contextExtend = 15;
+
+function highlight(inp) {
+  return '\x1b[46m\x1b[30m ' + inp + ' \x1b[0m';
+}
+
+function heading(inp) {
+  return '\x1b[41m\x1b[37m ' + inp + ' \x1b[0m';
+}
+
+var BrainfuckError = function BrainfuckError(program, section, message, type) {
+  _classCallCheck(this, BrainfuckError);
+
+  var start = section.start - contextExtend < 0 ? 0 : section.start - contextExtend;
+  var end = section.start + contextExtend >= program.length ? program.length : section.start + contextExtend;
+
+  this.message = message;
+  this.section = section;
+  this.type = type || 'Syntax';
+  this.highlight = program.slice(section.start, section.end);
+  this.context = {
+    start: program.slice(start, section.start),
+    end: program.slice(section.end, end)
+  };
+
+  var out = '\n\n' + heading(this.type) + ' ' + highlight(this.message) + '\n';
+  out += 'character: ' + (this.section.start + 1) + '\n';
+  out += '↳  ' + this.context.start;
+  out += highlight(this.highlight);
+  out += this.context.end + '\n';
+
+  return {
+    name: 'Unfuck Error',
+    message: out
+  };
+};
+
+module.exports = BrainfuckError;
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -246,7 +294,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -390,14 +438,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./interactive-es6": 1,
-	"./interactive-es6.js": 1,
-	"./simple-es6": 2,
-	"./simple-es6.js": 2
+	"./interactive-es6": 2,
+	"./interactive-es6.js": 2,
+	"./simple-es6": 3,
+	"./simple-es6.js": 3
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -413,10 +461,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 3;
+webpackContext.id = 4;
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -424,7 +472,7 @@ webpackContext.id = 3;
 
 function convert(settings, ast) {
   if (typeof settings.target === 'string') {
-    var target = __webpack_require__(3)("./" + settings.target);
+    var target = __webpack_require__(4)("./" + settings.target);
   } else {
     var target = settings.target;
   }
@@ -443,13 +491,13 @@ function convert(settings, ast) {
 module.exports = convert;
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var optimisers = [__webpack_require__(12), __webpack_require__(15), __webpack_require__(16), __webpack_require__(13), __webpack_require__(14)];
+var optimisers = [__webpack_require__(11), __webpack_require__(14), __webpack_require__(15), __webpack_require__(12), __webpack_require__(13)];
 
 function optimise(settings, ast) {
   return optimisers.reduce(function (acc, optimiser) {
@@ -460,7 +508,7 @@ function optimise(settings, ast) {
 module.exports = optimise;
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -496,10 +544,10 @@ function prepare(settings, bf) {
 }
 
 module.exports = prepare;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -507,7 +555,7 @@ module.exports = prepare;
 
 function wrap(settings, program) {
   if (typeof settings.target === 'string') {
-    var target = __webpack_require__(3)("./" + settings.target);
+    var target = __webpack_require__(4)("./" + settings.target);
   } else {
     var target = settings.target;
   }
@@ -519,66 +567,17 @@ function wrap(settings, program) {
 module.exports = wrap;
 
 /***/ }),
-/* 8 */,
 /* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var contextExtend = 15;
-
-function highlight(inp) {
-  return '\x1b[46m\x1b[30m ' + inp + ' \x1b[0m';
-}
-
-function heading(inp) {
-  return '\x1b[41m\x1b[37m ' + inp + ' \x1b[0m';
-}
-
-var BrainfuckError = function BrainfuckError(program, section, message, type) {
-  _classCallCheck(this, BrainfuckError);
-
-  var start = section.start - contextExtend < 0 ? 0 : section.start - contextExtend;
-  var end = section.start + contextExtend >= program.length ? program.length : section.start + contextExtend;
-
-  this.message = message;
-  this.section = section;
-  this.type = type || 'Syntax';
-  this.highlight = program.slice(section.start, section.end);
-  this.context = {
-    start: program.slice(start, section.start),
-    end: program.slice(section.end, end)
-  };
-
-  var out = '\n\n' + heading(this.type) + ' ' + highlight(this.message) + '\n';
-  out += 'character: ' + (this.section.start + 1) + '\n';
-  out += '↳  ' + this.context.start;
-  out += highlight(this.highlight);
-  out += this.context.end + '\n';
-
-  return {
-    name: 'Unfuck Error',
-    message: out
-  };
-};
-
-module.exports = BrainfuckError;
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var prepare = __webpack_require__(6);
+var prepare = __webpack_require__(7);
 var analyse = __webpack_require__(0);
-var optimise = __webpack_require__(5);
-var convert = __webpack_require__(4);
-var wrap = __webpack_require__(7);
+var optimise = __webpack_require__(6);
+var convert = __webpack_require__(5);
+var wrap = __webpack_require__(8);
 
 var initSettings = {
   language: "standard",
@@ -607,7 +606,7 @@ module.exports = {
     };
 
     this.use = function (bf) {
-      return eval(this.compile(bf).out);
+      return Function('return ' + this.compile(bf).out)();
     };
 
     this.run = function (bf) {
@@ -623,7 +622,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -717,10 +716,10 @@ module.exports = {
     return i;
   }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -757,7 +756,7 @@ function collapse(settings, ast) {
 module.exports = collapse;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -828,7 +827,7 @@ function fuse(settings, ast, inIf) {
 module.exports = fuse;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -907,7 +906,7 @@ function multiplication(settings, ast) {
 module.exports = multiplication;
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -936,7 +935,7 @@ function nullify(settings, ast) {
 module.exports = nullify;
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

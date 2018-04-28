@@ -31,7 +31,9 @@ module.exports = {
     }
 
     this.use = function ( bf ) {
-      return eval(this.compile(bf).out);
+      return Function(
+        `return ${this.compile(bf).out}`
+      )();
     }
 
     this.run = function ( bf, ...params ) {
