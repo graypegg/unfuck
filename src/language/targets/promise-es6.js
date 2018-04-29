@@ -102,7 +102,7 @@ module.exports = {
   context (settings) {
     var preHeader = 'this.i=i;return new Promise((r,c)=>{try{';
     var preFooter = '';
-    var postFooter = '}catch (e){c(e)}});';
+    var postFooter = '}catch (e){e.name="Internal Brainfuck Error";c(e)}});';
 
     switch (settings.in) {
       case String:
