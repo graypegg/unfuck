@@ -22,7 +22,7 @@ Returns a compiler object preloaded with the settings provided.
 	width: <Any Integer>,
 	in: <Number | String>,
 	out: <Number | String>,
-	target: <'simple-es6' | 'interactive-es6'>,
+	target: <'simple-es6' | 'interactive-es6' | 'promise-es6'>,
 }
 ```
 
@@ -59,8 +59,9 @@ Unfuck comes with a couple different compilation targets which affect how the ou
 
 | Name | Description | Example Usage |
 | :--: | ----------- | ------------- |
-| `'simple-es6'` | Input is taken as an `Array` or `String` *(depending input type, `Number` and `String` respectively)* in the first and only parameter of the outputted javascript function. Each instance of `,` in Brainfuck will take the first element off of this array and insert it onto the tape. Output is the returned value of the function.| `c.use(',-.')([4,3])`<br>`c.use(',-.')('abc')` |
+| `'simple-es6'` | Input is taken as an `Array` or `String` *(depending input type, `Number` and `String` respectively)* in the first and only parameter of the outputted javascript function. Each instance of `,` in Brainfuck will take the first element off of this array and insert it onto the tape.  Every instance of `.` will add the current cell's value to either an Array or a String *(depending output type, `Number` and `String` respectively)* that is returned **after halting**. | `c.use(',-.')([4,3])`<br>`c.use(',-.')('abc')` |
 | `'interactive-es6'` | Input is received synchronously from the first parameter to the outputted javascript function, it should be a function which can take the current cell value as it's first parameter. The output is also processed synchronously by the second parameter which should be a function that takes the current cell as it's first parameter. | `c.use(',-.')((x)=>{`<br>&nbsp;&nbsp;`getLine('Number?')`<br>`}, (x)=>{`<br>&nbsp;&nbsp;`console.log(x)`<br>`})` |
+| `'promise-es6'` | Input is taken as an `Array` or `String` *(depending input type, `Number` and `String` respectively)* in the first and only parameter of the outputted javascript function. Each instance of `,` in Brainfuck will take the first element off of this array and insert it onto the tape. Every instance of `.` will add the current cell's value to either an Array or a String *(depending output type, `Number` and `String` respectively)* that is returned in a Promise that will **resolve after the brainfuck program halts**. (The promise is returned immediately.) Any errors are caught inside the promise and get rejected. | `f(out){ console.log(out) }`<br>`c.use(',-.')([4,3]).then(f)`<br>`c.use(',-.')('abc').then(f)` |
 
 ---
 
